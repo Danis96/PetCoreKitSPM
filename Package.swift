@@ -16,7 +16,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/hmlongco/Factory", from: "2.3.1"),
         .package(path: "../SQAUtility"),
-        .package(path: "../SQAServices")
+        .package(path: "../SQAServices"),
+        .package(path: "../Shared_kit")
     ],
     targets: [
         .target(
@@ -24,7 +25,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Factory", package: "Factory"),
                 "SQAUtility",
-                "SQAServices"
+                "SQAServices",
+                "Shared_kit"
             ]),
         .testTarget(
             name: "PetCoreKitSPMTests",
