@@ -16,22 +16,22 @@ public final class PetCoreCoordinator: CoordinatorProtocol {
     public static let shared = PetCoreCoordinator()
     
     // MARK: - Protocol Requirements
-    public typealias Route = PetCoreRoute
+    public typealias Route = PetCoreViewRoute
     @Published public var path = NavigationPath()
     
     // MARK: - View Models
-//    @Published public private(set) var imageKitViewModel: ImageKitViewModel
+    @Published public private(set) var petCoreViewModel: PetCoreViewModel
     
     // MARK: - Navigation
-    @Published public var sheet: PetCoreRoute?
+    @Published public var sheet: PetCoreViewRoute?
     
     private init() {
-//        self.imageKitViewModel = ImageKitViewModel()
+        self.petCoreViewModel = PetCoreViewModel()
     }
     
     // MARK: - CoordinatorProtocol Methods
     public func start(onComplete: @escaping () -> Void) -> AnyView {
-        print("Starting Whiskr Image Coordinator")
+        print("Starting Pet Core Kit Coordinator")
         return AnyView(
             Text("Pet core coordinator")
 //            ImageKitPicker(selectedImage: imageKitViewModel.selectedImage,
@@ -41,7 +41,7 @@ public final class PetCoreCoordinator: CoordinatorProtocol {
         )
     }
     
-    public func navigate(to route: PetCoreRoute) {
+    public func navigate(to route: PetCoreViewRoute) {
         path.append(route)
     }
     
@@ -53,7 +53,7 @@ public final class PetCoreCoordinator: CoordinatorProtocol {
         path.removeLast(path.count)
     }
     
-    public func present(_ route: PetCoreRoute) {
+    public func present(_ route: PetCoreViewRoute) {
         sheet = route
     }
     
