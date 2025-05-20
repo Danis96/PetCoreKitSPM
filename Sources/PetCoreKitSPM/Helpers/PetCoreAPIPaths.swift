@@ -16,6 +16,16 @@ public enum PetCoreRoute: String, Identifiable {
     public var id: String { rawValue }
 }
 
+
+public enum PetCoreViewRoute: String, Identifiable {
+    case dashboard
+    case createPet
+    case updatePet
+    case petProfile
+    
+    public var id: String { rawValue }
+}
+
 public final class PetCoreAPIPaths: @unchecked Sendable {
     public static let shared: PetCoreAPIPaths = PetCoreAPIPaths()
     private init() {}
