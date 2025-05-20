@@ -10,6 +10,7 @@ import SQAUtility
 import SwiftUICore
 import Shared_kit
 
+@MainActor
 public class PetCoreViewModel: ObservableObject {
     
     @Injected(\PetCoreKitSPM.petCoreDataSource) var petCoreDataSource: PetCoreDataSourceProtocol
