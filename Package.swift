@@ -27,6 +27,9 @@ let package = Package(
                 "SQAUtility",
                 "SQAServices",
                 "Shared_kit"
+            ],
+            resources: [
+                .process("Resources")
             ]),
         .testTarget(
             name: "PetCoreKitSPMTests",
