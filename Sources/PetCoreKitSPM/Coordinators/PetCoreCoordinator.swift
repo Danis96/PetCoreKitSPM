@@ -33,11 +33,9 @@ public final class PetCoreCoordinator: CoordinatorProtocol {
     public func start(onComplete: @escaping () -> Void) -> AnyView {
         print("Starting Pet Core Kit Coordinator")
         return AnyView(
-            Text("Pet core coordinator")
-//            ImageKitPicker(selectedImage: imageKitViewModel.selectedImage,
-//                           placeholderText: "Select an image")
-//            .environmentObject(imageKitViewModel)
-//            .environmentObject(self)
+            PetCoreRootView()
+            .environmentObject(petCoreViewModel)
+            .environmentObject(self)
         )
     }
     

@@ -10,6 +10,8 @@ import SQAUtility
 import SwiftUICore
 import Shared_kit
 
+
+@MainActor
 public class PetCoreViewModel: ObservableObject {
     
     @Injected(\PetCoreKitSPM.petCoreDataSource) var petCoreDataSource: PetCoreDataSourceProtocol
@@ -23,6 +25,7 @@ public class PetCoreViewModel: ObservableObject {
     @Published var isSuccess: Bool = false
     
     @Published public var user: UserModel?
+    @Published public var userPets: [PetModel] = []
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -42,8 +45,23 @@ public class PetCoreViewModel: ObservableObject {
         }
     }
     
-    
-    
+    public func getUserPets() async -> ResponseModel<String> {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            let userID = storageManager.getUserID()
+            let dataResponse = try await petCoreDataSource.fetchOwnerPets(ownerID: userID ?? "")
+            if let error = dataResponse.error {
+                return failureResponse(error.description)
+            } else {
+                userPets = dataResponse.data ?? []
+                return successResponse("Success")
+            }
+        } catch let error as NSError {
+            return failureResponse(error.description)
+        }
+    }
     
     private func setAlert(message: String, success: Bool) {
         self.alertMessage = message
