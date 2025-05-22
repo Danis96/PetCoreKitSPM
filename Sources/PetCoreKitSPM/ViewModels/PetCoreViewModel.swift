@@ -26,6 +26,7 @@ public class PetCoreViewModel: ObservableObject {
     
     @Published public var user: UserModel?
     @Published public var userPets: [PetModel] = []
+    @Published public var selectedPet: PetModel?
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -61,6 +62,10 @@ public class PetCoreViewModel: ObservableObject {
         } catch let error as NSError {
             return failureResponse(error.description)
         }
+    }
+    
+    public func setSelectedPet(_ pet: PetModel) {
+        self.selectedPet = pet
     }
     
     private func setAlert(message: String, success: Bool) {
