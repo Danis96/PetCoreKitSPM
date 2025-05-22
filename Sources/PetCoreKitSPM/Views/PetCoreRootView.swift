@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shared_kit
 
 struct PetCoreRootView: View {
     
@@ -38,7 +39,9 @@ struct PetCoreKitDestinationView: View {
             case .updatePet:
                 Text("Update Pet")
             case .petProfile:
-                Text("Pet Profile")
+                PetProfileView()
+                    .environmentObject(BreedKitCoordinator.shared.breedKitViewModel)
+                    .environmentObject(BreedKitCoordinator.shared)
         }
     }
 }
