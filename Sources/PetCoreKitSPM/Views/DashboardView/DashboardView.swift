@@ -11,6 +11,7 @@ import SQAUtility
 struct DashboardView: View {
     
     @EnvironmentObject var viewModel: PetCoreViewModel
+    @EnvironmentObject var coordinator: PetCoreCoordinator
     @Injected(\SQAUtility.colorHelper) var colorHelper: ColorHelper
     
     var body: some View {
@@ -164,6 +165,7 @@ extension DashboardView {
             Text("Active Pet Profiles")
             Text("\(viewModel.userPets.count)")
                 .fontWeight(.bold)
+                .foregroundStyle(colorHelper.getColor(.blue500))
                 .padding(.all, 5)
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.1)))
                 
@@ -178,7 +180,9 @@ extension DashboardView {
                             petType: pet.petType ?? "",
                             petImage: pet.image?.url ?? "",
                             onTap: {
-                                // Handle pet selection
+                                viewModel.setSelectedPet(pet)
+                                coordinator.navigate(to: .petProfile)
+                                
                             }
                         )
                         .frame(width: UIScreen.main.bounds.width - 40)
@@ -219,6 +223,6 @@ extension DashboardView {
 
 #Preview {
     DashboardView()
-        .environmentObject(PetCoreViewModel())
+        .withSharedKitPreviewDependecies()
 }
 
