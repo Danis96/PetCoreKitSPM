@@ -23,8 +23,7 @@ struct DashboardView: View {
                     if viewModel.userPets.isEmpty {
                         emptyStateView
                     } else {
-                        Text("Dashboard")
-                            .padding(.top)
+                        activeDashboardView
                     }
                     
                     Spacer()
@@ -149,6 +148,45 @@ extension DashboardView {
                     .frame(width: 20, height: 20)
                     .foregroundColor(.white)
             }
+        }
+    }
+    
+    private var activeDashboardView: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            Spacer().frame(height: 5)
+            activePetCardList
+        }
+    }
+    
+    private var activePetCardList: some View {
+        
+        Section(header: HStack(spacing: 5) {
+            Text("Active Pet Profiles")
+            Text("\(viewModel.userPets.count)")
+                .fontWeight(.bold)
+                .padding(.all, 5)
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.1)))
+                
+        } .padding(.horizontal, 20))
+        {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(viewModel.userPets, id: \.id) { pet in
+                        ActivePetCardViewComponent(
+                            petName: pet.name ?? "",
+                            petBreed: pet.breedName ?? "",
+                            petType: pet.petType ?? "",
+                            petImage: pet.image?.url ?? "",
+                            onTap: {
+                                // Handle pet selection
+                            }
+                        )
+                        .frame(width: UIScreen.main.bounds.width - 40)
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+            .scrollTargetBehavior(.paging)
         }
     }
     

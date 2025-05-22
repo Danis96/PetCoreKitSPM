@@ -32,7 +32,7 @@ struct ActivePetCardViewComponent: View {
                 petImageComponent
             }
         }
-        .frame(width: .infinity, height: 150)
+        .frame(height: 150)
         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
         .onTapGesture {
             onTap()
@@ -57,14 +57,14 @@ extension ActivePetCardViewComponent {
     private var petInfoComponent: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(petName)
-                .font(.system(size: 42, weight: .bold))
+                .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.white)
             
             HStack(spacing: 4) {
                 Text(petType)
-                    .font(.system(size: 20))
+                    .font(.system(size: 18))
                 Text("|")
-                    .font(.system(size: 20))
+                    .font(.system(size: 18))
                     .padding(.horizontal, 8)
                 Text(petBreed)
                     .font(.system(size: 20))
