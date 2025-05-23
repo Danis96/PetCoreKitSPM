@@ -32,11 +32,22 @@ struct PetProfileView: View {
         }
         .background(Color.white)
         .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .bottom) {
+           bottomButton
+                .background(.ultraThinMaterial)
+        }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Pet Profile")
                     .font(.headline)
                     .foregroundColor(.black)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("") {
+                    print("Open delete dialog")
+                }
+                .background(Image(systemName: "trash.fill").resizable().scaledToFit() .frame(width: 20, height: 20).foregroundColor(.red))
+                    .padding(.trailing, 10)
             }
         }
         .onAppear {
@@ -233,6 +244,18 @@ extension PetProfileView {
             }
         }
         .padding(.vertical, 8)
+    }
+}
+
+
+// MARK: - Buttons
+extension PetProfileView {
+    private var bottomButton: some View {
+            SQAButton(title: "Edit \(petVM.selectedPet?.name ?? "pet")") {
+                print(">>> Edit Pet")
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 15)
     }
 }
 
