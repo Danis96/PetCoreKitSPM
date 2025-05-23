@@ -94,7 +94,7 @@ extension DashboardView {
 
 extension DashboardView {
     
-    private var customDivider: some View {
+    public var customDivider: some View {
         LinearGradient(
             gradient: Gradient(stops: [
                 .init(color: Color.gray.opacity(0.2), location: 0),
