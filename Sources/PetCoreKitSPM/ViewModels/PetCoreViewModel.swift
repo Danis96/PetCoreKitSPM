@@ -27,6 +27,10 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var user: UserModel?
     @Published public var userPets: [PetModel] = []
     @Published public var selectedPet: PetModel?
+    @Published public var petImage: ImageModel?
+    
+    @Published public var hasNewImageSelected: Bool = false
+    private var originalPetImage: ImageModel?
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -66,6 +70,64 @@ public class PetCoreViewModel: ObservableObject {
     
     public func setSelectedPet(_ pet: PetModel) {
         self.selectedPet = pet
+        self.petImage = pet.image
+        self.originalPetImage = pet.image
+        self.hasNewImageSelected = false
+    }
+    
+    public func checkForNewImageSelection() {
+        let isNewImage: Bool = {
+            if originalPetImage == nil && petImage == nil {
+                return false
+            }
+            
+            if (originalPetImage == nil) != (petImage == nil) {
+                return true
+            }
+            
+            if let original = originalPetImage, let current = petImage {
+                if current.imageProcessed != nil && current.url == nil && current.imageId == nil {
+                    return true
+                }
+                
+                return original.imageId != current.imageId || original.url != current.url
+            }
+            
+            return false
+        }()
+        
+        hasNewImageSelected = isNewImage
+    }
+    
+    
+    public func savePetImage() async -> ResponseModel<String> {
+        
+        do {
+            let pet = copyPetModelAndChangeImage()
+            let dataResponse = try await petCoreDataSource.editPet(pet: pet)
+            if let error = dataResponse.error {
+                return failureResponse(error.description)
+            } else {
+                selectedPet = dataResponse.data
+                return successResponse("Success", shouldSetAlert: true)
+            }
+        } catch let error as NSError {
+            return failureResponse(error.description)
+        }
+    }
+    
+    public func setPetImage(_ image: ImageModel?) {
+        self.petImage = image
+        checkForNewImageSelection()
+    }
+    
+    private func copyPetModelAndChangeImage() -> PetModel {
+        guard let pet: PetModel = selectedPet else {
+            fatalError("selectedPet is nil - cannot copy pet model")
+        }
+        var changedPetModel: PetModel = pet
+        changedPetModel.image = petImage
+        return changedPetModel
     }
     
     private func setAlert(message: String, success: Bool) {
