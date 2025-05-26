@@ -41,6 +41,7 @@ struct PetCoreKitDestinationView: View {
             case .petProfile:
                 PetProfileView()
                     .environmentObject(BreedKitCoordinator.shared.breedKitViewModel)
+                    .environmentObject(ImageKitCoordinator.shared.imageKitViewModel)
                     .environmentObject(BreedKitCoordinator.shared)
         }
     }

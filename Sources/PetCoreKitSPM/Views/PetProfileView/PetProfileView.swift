@@ -13,6 +13,7 @@ struct PetProfileView: View {
     
     @EnvironmentObject var petVM: PetCoreViewModel
     @EnvironmentObject var breedVM: BreedKitViewModel
+    @EnvironmentObject var imageVM: ImageKitViewModel
     @Injected(\SQAUtility.colorHelper) var colorHelper: ColorHelper
     
     var body: some View {
@@ -33,7 +34,7 @@ struct PetProfileView: View {
         .background(Color.white)
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
-           bottomButton
+            bottomButton
                 .background(.ultraThinMaterial)
         }
         .toolbar {
@@ -47,8 +48,15 @@ struct PetProfileView: View {
                     print("Open delete dialog")
                 }
                 .background(Image(systemName: "trash.fill").resizable().scaledToFit() .frame(width: 20, height: 20).foregroundColor(.red))
-                    .padding(.trailing, 10)
+                .padding(.trailing, 10)
             }
+        }
+        .alert(isPresented: $petVM.showAlert) {
+            Alert(
+                title: Text(petVM.isSuccess ? "Success" : "Error"),
+                message: Text(petVM.alertMessage),
+                dismissButton: .default(Text("Ok")) { petVM.showAlert = false }
+            )
         }
         .onAppear {
             Task {
@@ -69,45 +77,13 @@ extension PetProfileView {
     }
     
     private var petImageWithEditButton: some View {
-        ZStack {
-            Circle()
-                .fill(Color.gray.opacity(0.2))
-                .frame(width: 120, height: 120)
-            
-            AsyncImage(url: URL(string: petVM.selectedPet?.image?.url ?? "")) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                case .failure(_), .empty:
-                    Image(systemName: "pawprint.fill")
-                        .font(.system(size: 40))
-                        .foregroundColor(.gray)
-                        .frame(width: 100, height: 100)
-                @unknown default:
-                    EmptyView()
-                }
-            }
-            
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                          print("Open image picker from shared")
-                    }) {
-                        Image(systemName: "pencil.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white)
-                            .background(Circle().fill(Color.black.opacity(0.7)))
-                    }
-                }
-                Spacer()
-            }
-            .frame(width: 100, height: 100)
-        }
+        ImageKitCoordinator.shared.start(
+            selectedImage: $petVM.petImage,
+            placeholderText: "Edit pet image",
+            type: .userProfile,
+            typeID: petVM.user?.id ?? "",
+            allowInternalUse: false,
+        )
     }
     
     private var petNameAndBreedInfo: some View {
@@ -121,7 +97,7 @@ extension PetProfileView {
                 Shared_kit.startCustomBreedKit(
                     width: 30,
                     height: 30,
-                    icon: "teddybear"
+                    icon: "pawprint.circle"
                 ) {}
             }
             
@@ -251,11 +227,26 @@ extension PetProfileView {
 // MARK: - Buttons
 extension PetProfileView {
     private var bottomButton: some View {
-            SQAButton(title: "Edit \(petVM.selectedPet?.name ?? "pet")") {
+        SQAButton(title: petVM.hasNewImageSelected ? "Save Image" : "Edit \(petVM.selectedPet?.name ?? "pet")") {
+            if petVM.hasNewImageSelected {
+                Task {
+                   let imageResponse = try await uploadPetPicture()
+                   if imageResponse.isSuccess {
+                       try await changePetImage()
+                    } else {
+                        
+                    }
+                }
+            } else {
                 print(">>> Edit Pet")
+                // Handle editing pet here
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 15)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 15)
+        .onChange(of: petVM.petImage) { _, _ in
+            petVM.checkForNewImageSelection()
+        }
     }
 }
 
@@ -278,12 +269,26 @@ extension PetProfileView {
             breedVM.selectBreed(breedID: petVM.selectedPet?.breedID ?? "")
         }
     }
+    
+    private func uploadPetPicture() async -> ResponseModel<String> {
+        let response = await imageVM.uploadImage(folder: .petProfile)
+        if response.isSuccess  {
+            petVM.setPetImage(response.data)
+            return ResponseModel<String>(data: "Success", error: nil)
+        } else {
+            return ResponseModel<String>(data: nil, error: "Error")
+        }
+    }
+    
+    private func changePetImage() async throws {
+        let response = try await petVM.savePetImage()
+    }
 }
 
 #Preview {
     NavigationStack {
         PetProfileView()
-            .withBreedKitPreviewDependecies()
+            .withSharedKitPreviewDependecies()
             .environmentObject(PetCoreViewModel())
     }
 }
