@@ -116,6 +116,20 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
         }
     }
     
+    public func fetchPetType() async throws -> ResponseModel<[PetTypeModel]> {
+        do {
+            let response = try await networkService.get(
+                path: PetCoreAPIPaths.shared.path(for: .getPetType),
+                headers: headerHelper.getValue(type: .auth_app_json, accessToken: getAuthToken() ?? ""),
+                as: [PetTypeModel].self,
+            )
+            
+            return ResponseModel(data: response, error: nil)
+        } catch {
+            return ResponseModel(data: nil, error: error.localizedDescription)
+        }
+    }
+    
     private func getAuthToken() -> String? {
         do {
             let token = try storageManager.getSecureValue(forKey: .accessToken)

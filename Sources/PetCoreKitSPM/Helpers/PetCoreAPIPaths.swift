@@ -12,6 +12,7 @@ public enum PetCoreRoute: String, Identifiable {
     case getPetByID
     case getOwnersPets
     case getUserByID
+    case getPetType
     
     public var id: String { rawValue }
 }
@@ -44,6 +45,8 @@ public final class PetCoreAPIPaths: @unchecked Sendable {
                 return "/pets/owner/\(concatValue ?? "")"
             case .getUserByID:
                 return "/user/\(concatValue ?? "")"
+            case .getPetType:
+                return "/pets/animals/types"
         }
     }
 }
