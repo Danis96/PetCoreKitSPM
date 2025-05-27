@@ -14,6 +14,7 @@ public protocol PetCoreDataSourceProtocol: Sendable {
     func fetchOwnerPets(ownerID: String) async throws -> ResponseModel<[PetModel]>
     func fetchPetById(petID: String) async throws -> ResponseModel<PetModel>
     func fetchUserById(userID: String) async throws -> ResponseModel<UserModel>
+    func fetchPetType() async throws -> ResponseModel<[PetTypeModel]>
     func editPet(pet: PetModel) async throws -> ResponseModel<PetModel>
     func deletePet(petID: String) async throws -> ResponseModel<String>
 }

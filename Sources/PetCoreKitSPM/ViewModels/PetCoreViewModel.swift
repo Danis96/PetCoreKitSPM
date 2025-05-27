@@ -28,9 +28,14 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var userPets: [PetModel] = []
     @Published public var selectedPet: PetModel?
     @Published public var petImage: ImageModel?
+    @Published public var petTypeList: [PetTypeModel] = []
     
     @Published public var hasNewImageSelected: Bool = false
     private var originalPetImage: ImageModel?
+    
+    
+    // MARK: Add pet properties
+    @Published public var petName: String = ""
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -128,6 +133,17 @@ public class PetCoreViewModel: ObservableObject {
         var changedPetModel: PetModel = pet
         changedPetModel.image = petImage
         return changedPetModel
+    }
+    
+    public func fetchPetType() async throws -> ResponseModel<String> {
+        do {
+            let dataResponse = try await petCoreDataSource.fetchPetType()
+            petTypeList = dataResponse.data ?? []
+            
+            return successResponse("Success", shouldSetAlert: false)
+        } catch let error as NSError {
+            return failureResponse(error.description)
+        }
     }
     
     private func setAlert(message: String, success: Bool) {
