@@ -15,6 +15,7 @@ import Shared_kit
 public class PetCoreViewModel: ObservableObject {
     
     @Injected(\PetCoreKitSPM.petCoreDataSource) var petCoreDataSource: PetCoreDataSourceProtocol
+    @Injected(\Shared_kit.breedDataSource) var breedDataSource: BreedKitDataSourceProtocols
     @Injected(\SQAUtility.storageManager) var storageManager: StorageManager
     
     public init() {}
@@ -29,6 +30,7 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var selectedPet: PetModel?
     @Published public var petImage: ImageModel?
     @Published public var petTypeList: [PetTypeModel] = []
+    @Published public var breeds: [BreedModel] = []
     
     @Published public var hasNewImageSelected: Bool = false
     private var originalPetImage: ImageModel?
@@ -154,6 +156,29 @@ public class PetCoreViewModel: ObservableObject {
         }
         self.petType = selectedPetType
         print(self.petType)
+    }
+    
+    public func fetchBreeds() async -> ResponseModel<String> {
+        do {
+            let response = try await breedDataSource.getBreeds(petSpecie: petType)
+            
+            if response.isSuccess {
+                breeds = response.data ?? []
+                return ResponseModel<String>(data: "Success", error: nil)
+            } else {
+                return ResponseModel<String>(data: nil, error: response.error ?? "")
+            }
+        } catch {
+            return ResponseModel<String>(data: nil, error: error.localizedDescription)
+        }
+    }
+
+    public func setPetBreed(_ selectedPetBreed: String?) {
+        guard let selectedPetBreed: String = selectedPetBreed else {
+            fatalError("selectedPetType is nil - cannot set")
+        }
+        self.petBreed = selectedPetBreed
+        print(self.petBreed)
     }
     
     private func setAlert(message: String, success: Bool) {

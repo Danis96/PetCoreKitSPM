@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct PetTypeCardComponent: View {
-    let petType: PetTypeModel
+    let type: String?
+    let image: String?
     let isSelected: Bool
     let onTap: () -> Void
     
     private var displayName: String {
-        let typeName: String = petType.type ?? ""
+        let typeName: String = type ?? ""
         return typeName.replacingOccurrences(of: "_", with: " ")
             .capitalized
     }
@@ -39,7 +40,7 @@ struct PetTypeCardComponent: View {
                         )
                         .frame(width: 80, height: 80)
                     
-                    AsyncImage(url: URL(string: petType.image ?? "")) { image in
+                    AsyncImage(url: URL(string: image ?? "")) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -91,7 +92,7 @@ struct PetTypeCardComponent_Previews: PreviewProvider {
             HStack(spacing: 15) {
                 ForEach(PetCoreDeveloperPreview.shared.previewAnimalType.prefix(4), id: \.self) { petType in
                     PetTypeCardComponent(
-                        petType: petType,
+                        type: "DOG", image: "",
                         isSelected: PetCoreDeveloperPreview.shared.petCoreViewModel.petType == petType.type ?? "",
                         onTap: {
                             PetCoreDeveloperPreview.shared.petCoreViewModel.setPetType(petType.type?.uppercased() ?? "")
@@ -103,13 +104,13 @@ struct PetTypeCardComponent_Previews: PreviewProvider {
             // Show selected and unselected states
             HStack(spacing: 20) {
                 PetTypeCardComponent(
-                    petType: PetCoreDeveloperPreview.shared.previewAnimalType.first ?? PetTypeModel(),
+                    type: "DOG", image: "",
                     isSelected: false,
                     onTap: {}
                 )
                 
                 PetTypeCardComponent(
-                    petType: PetCoreDeveloperPreview.shared.previewAnimalType.first ?? PetTypeModel(),
+                    type: "DOG", image: "",
                     isSelected: true,
                     onTap: {}
                 )

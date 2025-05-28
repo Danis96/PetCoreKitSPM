@@ -63,6 +63,18 @@ class PetCoreDeveloperPreview {
         }
     }
 
+    public var previewABreedList: [BreedModel] {
+        let jsonData: Data = jsonBreedList.data(using: .utf8)!
+        let decoder: JSONDecoder = JSONDecoder()
+        
+        do {
+            return try decoder.decode([BreedModel].self, from: jsonData)
+        } catch {
+            print("Error decoding JSON: \(error)")
+            return []
+        }
+    }
+
     public var previewAnimalType: [PetTypeModel] {
         let jsonData: Data = jsonAnimalType.data(using: .utf8)!
         let decoder: JSONDecoder = JSONDecoder()
@@ -77,6 +89,40 @@ class PetCoreDeveloperPreview {
     
     
     let jsonBreed: String = """
+        {
+            "id": "02c3b1df-1f5e-44f0-9c28-7bd99b834621",
+            "description": "American Bobtails are loving and incredibly intelligent cats possessing a distinctive wild appearance. They are extremely interactive cats that bond with their human family with great devotion.",
+            "old_id": "abob",
+            "life_span": "11 - 15",
+            "name": "American Bobtail",
+            "origin": "United States",
+            "reference_image": "https://ik.imagekit.io/petpals/cats/abob.png?updatedAt=1724704899228",
+            "reference_image_id": "hBXicehMA",
+            "temperament": "Intelligent, Interactive, Lively, Playful, Sensitive",
+            "weight": {
+                "metric": "3 - 7",
+                "imperial": "7 - 16"
+            }
+        }
+        """
+
+
+    let jsonBreedList: String = """
+        {
+            "id": "02c3b1df-1f5e-44f0-9c28-7bd99b834621",
+            "description": "American Bobtails are loving and incredibly intelligent cats possessing a distinctive wild appearance. They are extremely interactive cats that bond with their human family with great devotion.",
+            "old_id": "abob",
+            "life_span": "11 - 15",
+            "name": "American Bobtail",
+            "origin": "United States",
+            "reference_image": "https://ik.imagekit.io/petpals/cats/abob.png?updatedAt=1724704899228",
+            "reference_image_id": "hBXicehMA",
+            "temperament": "Intelligent, Interactive, Lively, Playful, Sensitive",
+            "weight": {
+                "metric": "3 - 7",
+                "imperial": "7 - 16"
+            }
+        }
         {
             "id": "02c3b1df-1f5e-44f0-9c28-7bd99b834621",
             "description": "American Bobtails are loving and incredibly intelligent cats possessing a distinctive wild appearance. They are extremely interactive cats that bond with their human family with great devotion.",
