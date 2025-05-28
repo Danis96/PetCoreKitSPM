@@ -15,8 +15,6 @@ struct AddPetView: View {
     
     @State private var currentStep: Int = 0
     
-    @State private var petType: String = ""
-    @State private var petBreed: String = ""
     @State private var petAge: Int = 0
     @State private var petWeight: Double = 0.0
     @State private var petDescription: String = ""
@@ -32,8 +30,7 @@ struct AddPetView: View {
     ]
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
+         VStack(spacing: 0) {
                 // Stepper Header
                 stepperHeader
                 
@@ -47,9 +44,16 @@ struct AddPetView: View {
                 
                 // Navigation Buttons
                 navigationButtons
+        }
+         .toolbar(content: {
+             ToolbarItem(placement: .principal) {
+                 Text("Add New Pet")
+             }
+         })
+        .onAppear {
+            Task {
+                try await petVM.fetchPetType()
             }
-            .navigationTitle("Add New Pet")
-            .navigationBarTitleDisplayMode(.large)
         }
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectedImage: $selectedImage)
@@ -137,18 +141,19 @@ struct AddPetView: View {
                 Text("Pet Type")
                     .font(.headline)
                 
-                HStack(spacing: 16) {
-                    ForEach(["Dog", "Cat", "Bird", "Fish"], id: \.self) { type in
-                        Button(action: {
-                            petType = type
-                        }) {
-                            Text(type)
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 10)
-                                .background(petType == type ? Color.blue : Color.gray.opacity(0.2))
-                                .foregroundColor(petType == type ? .white : .primary)
-                                .cornerRadius(20)
-                        }
+                LazyVGrid(columns: [
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12)
+                ], spacing: 16) {
+//                    ForEach(PetCoreDeveloperPreview.shared.previewAnimalType, id: \.self) { petType in
+                    ForEach(petVM.petTypeList, id: \.self) { petType in
+                        PetTypeCardComponent(
+                            petType: petType,
+                            isSelected: petVM.petType == petType.type ?? "",
+                            onTap: {
+                                petVM.setPetType(petType.type?.uppercased() ?? "")
+                            }
+                        )
                     }
                 }
             }
@@ -168,7 +173,7 @@ struct AddPetView: View {
                 Text("Breed")
                     .font(.headline)
                 
-                TextField("Enter breed", text: $petBreed)
+                TextField("Enter breed", text: $petVM.petBreed)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             }
             
@@ -269,8 +274,8 @@ struct AddPetView: View {
                 
                 VStack(spacing: 12) {
                     reviewRow(title: "Name", value: petVM.petName ?? "")
-                    reviewRow(title: "Type", value: petType)
-                    reviewRow(title: "Breed", value: petBreed)
+                    reviewRow(title: "Type", value: petVM.petType)
+                    reviewRow(title: "Breed", value: petVM.petBreed)
                     reviewRow(title: "Age", value: "\(petAge) years")
 
                     
@@ -326,7 +331,7 @@ struct AddPetView: View {
                     }
                 }
                 .buttonStyle(PrimaryButtonStyle())
-                .disabled(!canProceedToNextStep)
+//                .disabled(!canProceedToNextStep)
             } else {
                 Button("Save Pet") {
                     savePet()
@@ -344,9 +349,9 @@ struct AddPetView: View {
     private var canProceedToNextStep: Bool {
         switch currentStep {
         case 0:
-            return petVM.petName.isEmpty && !petType.isEmpty
+            return petVM.petName.isEmpty && petVM.petType.isEmpty
         case 1:
-            return !petBreed.isEmpty
+            return !petVM.petBreed.isEmpty
         case 2:
             return petWeight > 0
         default:
@@ -355,7 +360,7 @@ struct AddPetView: View {
     }
     
     private var isFormComplete: Bool {
-        return petVM.petName.isEmpty && !petType.isEmpty && !petBreed.isEmpty && petWeight > 0
+        return petVM.petName.isEmpty && !petVM.petType.isEmpty && !petVM.petBreed.isEmpty && petWeight > 0
     }
     
     // MARK: - Actions
@@ -432,8 +437,9 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
+
 #Preview {
     AddPetView()
-        .environmentObject(PetCoreViewModel())
+        .withPetCorePreviewDependecies()
 }
 
