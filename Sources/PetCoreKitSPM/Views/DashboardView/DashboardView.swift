@@ -45,10 +45,11 @@ struct DashboardView: View {
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
+                            coordinator.navigate(to: .createPet)
                         }) {
-                            Image(systemName: "line.3.horizontal")
+                            Image(systemName: "plus.app")
                                 .font(.title3)
-                                .foregroundColor(.primary)
+                                .foregroundColor(colorHelper.getColor(.blue500))
                         }
                     }
                 }
@@ -182,7 +183,6 @@ extension DashboardView {
                             onTap: {
                                 viewModel.setSelectedPet(pet)
                                 coordinator.navigate(to: .petProfile)
-                                
                             }
                         )
                         .frame(width: UIScreen.main.bounds.width - 40)
@@ -193,6 +193,7 @@ extension DashboardView {
             .scrollTargetBehavior(.paging)
         }
     }
+    
     
     private var emptyStateView: some View {
         VStack(spacing: 20) {
@@ -212,7 +213,7 @@ extension DashboardView {
             Spacer()
             
             SQAButton(title: "Add Pet", action: {
-                print("Navigate to Add Pet Screen")
+                coordinator.navigate(to: .createPet)
             }
           )
         }
@@ -224,5 +225,6 @@ extension DashboardView {
 #Preview {
     DashboardView()
         .withSharedKitPreviewDependecies()
+        .environmentObject(PetCoreViewModel())
 }
 

@@ -36,6 +36,8 @@ public class PetCoreViewModel: ObservableObject {
     
     // MARK: Add pet properties
     @Published public var petName: String = ""
+    @Published public var petType: String = ""
+    @Published public var petBreed: String = ""
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -144,6 +146,14 @@ public class PetCoreViewModel: ObservableObject {
         } catch let error as NSError {
             return failureResponse(error.description)
         }
+    }
+    
+    public func setPetType(_ selectedPetType: String?) {
+        guard let selectedPetType: String = selectedPetType else {
+            fatalError("selectedPetType is nil - cannot set")
+        }
+        self.petType = selectedPetType
+        print(self.petType)
     }
     
     private func setAlert(message: String, success: Bool) {

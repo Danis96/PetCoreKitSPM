@@ -35,7 +35,7 @@ struct PetCoreKitDestinationView: View {
             case .dashboard:
                 DashboardView()
             case .createPet:
-                Text("Create Pet")
+                AddPetView()
             case .updatePet:
                 Text("Update Pet")
             case .petProfile:
