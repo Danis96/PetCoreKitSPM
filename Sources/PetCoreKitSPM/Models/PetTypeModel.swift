@@ -5,7 +5,7 @@
 //  Created by Danis Preldzic on 27. 5. 2025..
 //
 
-public struct PetTypeModel: Identifiable, Codable, Sendable {
+public struct PetTypeModel: Identifiable, Codable, Sendable, Hashable {
     
     public var id: String?
     var type: String?
