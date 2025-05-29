@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import SQAUtility
+import Factory
 
 struct Step4HealthInfo: View {
-    @Binding var petWeight: Double
-    @Binding var petDescription: String
+    
+    @EnvironmentObject var petVM: PetCoreViewModel
+    @Injected(\SQAUtility.colorHelper) var colorHelper: ColorHelper
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -22,24 +25,69 @@ struct Step4HealthInfo: View {
                     .font(.headline)
                 
                 HStack {
-                    TextField("0.0", value: $petWeight, format: .number)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.decimalPad)
+                    SQATextField(placeholder: "Enter weight", text: $petVM.petWeight, keyboardType: .number)
                     
                     Text("kg")
                         .foregroundColor(.gray)
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 12) {
-                Text("Additional Notes")
+                Text("Size")
                     .font(.headline)
                 
-                TextEditor(text: $petDescription)
-                    .frame(minHeight: 100)
-                    .padding(8)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
+                Picker("Select Size", selection: Binding<String>(
+                    get: { petVM.petSize },
+                    set: { newValue in petVM.setPetSize(newValue) }
+                )) {
+                    ForEach(petVM.sizes, id: \.self) { size in
+                        Text(size.capitalized)
+                            .tag(size)
+                    }
+                }
+                .pickerStyle(PalettePickerStyle())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+            }
+            
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Birthday")
+                    .font(.headline)
+                
+                DatePicker(
+                    "Select Birthday",
+                    selection: Binding<Date>(
+                        get: { petVM.petBirthday },
+                        set: { newValue in petVM.setPetBirthday(newValue) }
+                    ),
+                    displayedComponents: .date
+                )
+                .datePickerStyle(CompactDatePickerStyle())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(colorHelper.getColor(.blue100))
+                .cornerRadius(8)
+            }
+            
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Adoption Date")
+                    .font(.headline)
+                
+                DatePicker(
+                    "Select Adoption Date",
+                    selection: Binding<Date>(
+                        get: { petVM.petAdoptionDate },
+                        set: { newValue in petVM.setPetAdoptionDate(newValue) }
+                    ),
+                    displayedComponents: .date
+                )
+                .datePickerStyle(CompactDatePickerStyle())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(colorHelper.getColor(.blue100))
+                .cornerRadius(8)
             }
             
             Spacer()
@@ -48,8 +96,6 @@ struct Step4HealthInfo: View {
 }
 
 #Preview {
-    Step4HealthInfo(
-        petWeight: .constant(5.5),
-        petDescription: .constant("Sample description")
-    )
+    Step4HealthInfo()
+        .withPetCorePreviewDependecies()
 }
