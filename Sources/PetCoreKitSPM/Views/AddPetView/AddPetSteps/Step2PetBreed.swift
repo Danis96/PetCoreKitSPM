@@ -31,7 +31,7 @@ struct Step2PetBreed: View {
                             type: breed.name, image: breed.referenceImage,
                             isSelected: petVM.petBreed == breed.name ?? "",
                             onTap: {
-                                petVM.setPetBreed(breed.name)
+                                petVM.setPetBreed(breed.name, breedID: breed.id)
                             }
                         )
                     }

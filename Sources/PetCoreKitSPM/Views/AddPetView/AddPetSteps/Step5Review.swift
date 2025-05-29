@@ -5,16 +5,13 @@
 //  Created by Danis Preldzic on 28. 5. 2025..
 //
 
-
 import SwiftUI
+import Shared_kit
 
 struct Step5Review: View {
     @EnvironmentObject private var petVM: PetCoreViewModel
-    let petAge: Int
-    let petWeight: Double
-    let petDescription: String
-    let selectedImage: UIImage?
-    
+    @EnvironmentObject private var breedVM: BreedKitViewModel
+        
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Review your pet's information")
@@ -22,26 +19,28 @@ struct Step5Review: View {
                 .fontWeight(.semibold)
             
             VStack(spacing: 16) {
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 120, height: 120)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                VStack(alignment: .center) {
+                    petImageComponent
+                    
+                    HStack {
+                        reviewRow(title: "Breed", value: petVM.petBreed)
+                        Shared_kit.startCustomBreedKit(width: 30, height: 30, icon: "pawprint") {
+                            
+                        }
+                    }
                 }
-                
+
                 VStack(spacing: 12) {
                     reviewRow(title: "Name", value: petVM.petName ?? "")
-                    reviewRow(title: "Type", value: petVM.petType)
-                    reviewRow(title: "Breed", value: petVM.petBreed)
-                    reviewRow(title: "Age", value: "\(petAge) years")
-                    reviewRow(title: "Weight", value: String(format: "%.1f kg", petWeight))
+                    reviewRow(title: "Age", value: "\(petVM.calculateAge(from:petVM.dateToString(petVM.petBirthday))) years")
+                    reviewRow(title: "Weight", value: String(format: "%.1f kg", petVM.petWeight))
+                    reviewRow(title: "Size", value: petVM.petSize.capitalized)
                     
-                    if !petDescription.isEmpty {
+                    if !petVM.petDescription.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Notes:")
                                 .font(.headline)
-                            Text(petDescription)
+                            Text(petVM.petDescription)
                                 .font(.body)
                                 .foregroundColor(.secondary)
                         }
@@ -55,8 +54,13 @@ struct Step5Review: View {
             
             Spacer()
         }
+        .onAppear() {
+            breedVM.selectBreed(breedID: petVM.petBreedID)
+        }
     }
-    
+}
+
+extension Step5Review {
     private func reviewRow(title: String, value: String) -> some View {
         HStack {
             Text(title + ":")
@@ -67,14 +71,50 @@ struct Step5Review: View {
         }
         .padding(.vertical, 4)
     }
+    
+    private var petImageComponent: some View {
+        ZStack {
+            // Blue circle background
+            Circle()
+                .fill(Color(red: 0.37, green: 0.52, blue: 0.93).opacity(0.6))
+                .frame(width: 120, height: 120)
+            
+            // Pet Image
+            AsyncImage(url: URL(string: petVM.petImage?.url ?? "")) { phase in
+                switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                    case .failure(_):
+                        Image(systemName: "photo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.white)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                    case .empty:
+                        ProgressView()
+                            .frame(width: 100, height: 100)
+                    @unknown default:
+                        EmptyView()
+                }
+            }
+        }
+        .padding(.trailing, 24)
+    }
 }
 
 #Preview {
-    Step5Review(
-        petAge: 3,
-        petWeight: 12.5,
-        petDescription: "Very friendly and energetic dog",
-        selectedImage: nil
-    )
+    Step5Review()
     .withPetCorePreviewDependecies()
 }

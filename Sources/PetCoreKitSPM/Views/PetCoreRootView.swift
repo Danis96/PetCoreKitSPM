@@ -36,6 +36,8 @@ struct PetCoreKitDestinationView: View {
                 DashboardView()
             case .createPet:
                 AddPetView()
+                    .environmentObject(BreedKitCoordinator.shared.breedKitViewModel)
+                    .environmentObject(ImageKitCoordinator.shared.imageKitViewModel)
             case .updatePet:
                 Text("Update Pet")
             case .petProfile:

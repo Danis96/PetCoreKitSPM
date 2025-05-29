@@ -13,8 +13,8 @@ Danis Preldzic
 
 ## Dependencies
 - [Factory](https://github.com/hmlongco/Factory) (2.3.1+): A Swift dependency injection framework
-- SQAUtility: Local dependency for utility functions
-- SQAServices: Local dependency for services
+- Utility: Local dependency for utility functions
+- Services: Local dependency for services
 - Shared_kit: Local dependency for shared components
 
 ## Features

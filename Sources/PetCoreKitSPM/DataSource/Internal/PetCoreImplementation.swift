@@ -20,8 +20,6 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
     @Injected(\SQAServices.apiHeaderHelper) var headerHelper: ApiHeaders
     @Injected(\SQAUtility.storageManager) var storageManager: StorageManager
     
-    
-    
     public func fetchUserById(userID: String) async throws -> ResponseModel<UserModel> {
         do {
            
