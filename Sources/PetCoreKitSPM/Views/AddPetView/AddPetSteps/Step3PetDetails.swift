@@ -6,65 +6,61 @@
 //
 
 import SwiftUI
+import Factory
+import SQAUtility
+import Shared_kit
 
 struct Step3PetDetails: View {
     @EnvironmentObject private var petVM: PetCoreViewModel
-    @Binding var petAge: Int
-    @Binding var selectedImage: UIImage?
-    @Binding var showingImagePicker: Bool
+    @Injected(\SQAUtility.colorHelper) var colorHelper
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Tell us more about your pet")
-                .font(.title2)
-                .fontWeight(.semibold)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+            
+            VStack(alignment: .center, spacing: 12) {
+                ImageKitCoordinator.shared.start(
+                    selectedImage: $petVM.petImage,
+                    type: .petProfile,
+                    allowInternalUse: false,
+                )
+            }
+            .frame(maxWidth: .infinity)
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("Breed")
+                Text("Description")
                     .font(.headline)
                 
-                TextField("Enter breed", text: $petVM.petBreed)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextEditor(text: $petVM.petDescription)
+                    .frame(minHeight: 60)
+                    .padding(8)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
             }
             
+            // MARK: - Gender Picker Section
             VStack(alignment: .leading, spacing: 12) {
-                Text("Age (years)")
+                Text("Gender")
                     .font(.headline)
                 
-                Stepper(value: $petAge, in: 0...30) {
-                    Text("\(petAge) years old")
-                }
-            }
-            
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Pet Photo")
-                    .font(.headline)
-                
-                Button(action: {
-                    showingImagePicker = true
-                }) {
-                    if let selectedImage = selectedImage {
-                        Image(uiImage: selectedImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 100, height: 100)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                    } else {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(width: 100, height: 100)
-                            .overlay(
-                                VStack {
-                                    Image(systemName: "camera")
-                                        .font(.title2)
-                                    Text("Add Photo")
-                                        .font(.caption)
-                                }
-                                    .foregroundColor(.gray)
-                            )
+                Picker("Select Gender", selection: Binding<String>(
+                    get: { petVM.petGender },
+                    set: { newValue in petVM.setPetGender(newValue) }
+                )) {
+                    ForEach(petVM.genders, id: \.self) { gender in
+                        Text(gender.capitalized)
+                            .tag(gender)
                     }
                 }
+                .pickerStyle(PalettePickerStyle())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
             }
+            
             
             Spacer()
         }
@@ -72,10 +68,6 @@ struct Step3PetDetails: View {
 }
 
 #Preview {
-    Step3PetDetails(
-        petAge: .constant(2),
-        selectedImage: .constant(nil),
-        showingImagePicker: .constant(false)
-    )
+    Step3PetDetails()
     .withPetCorePreviewDependecies()
 }

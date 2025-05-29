@@ -35,11 +35,28 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var hasNewImageSelected: Bool = false
     private var originalPetImage: ImageModel?
     
-    
     // MARK: Add pet properties
+    @Published public var currentStep: Int = 0
+    public let totalSteps: Int = 5
+    public let stepTitles: [String] = [
+        "Basic Info",
+        "Breed",
+        "Pet Details",
+        "Health Info",
+        "Review"
+    ]
     @Published public var petName: String = ""
     @Published public var petType: String = ""
     @Published public var petBreed: String = ""
+    @Published public var petBreedID: String = ""
+    @Published public var petWeight: String = ""
+    @Published public var petDescription: String = ""
+    @Published public var petGender: String = "MALE"
+    public let genders: [String] = ["MALE", "FEMALE", "INTERSEX"]
+    @Published public var petSize: String = "SMALL"
+    public let sizes: [String] = ["SMALL", "MEDIUM", "LARGE"]
+    @Published public var petBirthday: Date = Date()
+    @Published public var petAdoptionDate: Date = Date()
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -77,13 +94,6 @@ public class PetCoreViewModel: ObservableObject {
         }
     }
     
-    public func setSelectedPet(_ pet: PetModel) {
-        self.selectedPet = pet
-        self.petImage = pet.image
-        self.originalPetImage = pet.image
-        self.hasNewImageSelected = false
-    }
-    
     public func checkForNewImageSelection() {
         let isNewImage: Bool = {
             if originalPetImage == nil && petImage == nil {
@@ -110,7 +120,6 @@ public class PetCoreViewModel: ObservableObject {
     
     
     public func savePetImage() async -> ResponseModel<String> {
-        
         do {
             let pet = copyPetModelAndChangeImage()
             let dataResponse = try await petCoreDataSource.editPet(pet: pet)
@@ -123,11 +132,6 @@ public class PetCoreViewModel: ObservableObject {
         } catch let error as NSError {
             return failureResponse(error.description)
         }
-    }
-    
-    public func setPetImage(_ image: ImageModel?) {
-        self.petImage = image
-        checkForNewImageSelection()
     }
     
     private func copyPetModelAndChangeImage() -> PetModel {
@@ -150,14 +154,6 @@ public class PetCoreViewModel: ObservableObject {
         }
     }
     
-    public func setPetType(_ selectedPetType: String?) {
-        guard let selectedPetType: String = selectedPetType else {
-            fatalError("selectedPetType is nil - cannot set")
-        }
-        self.petType = selectedPetType
-        print(self.petType)
-    }
-    
     public func fetchBreeds() async -> ResponseModel<String> {
         do {
             let response = try await breedDataSource.getBreeds(petSpecie: petType)
@@ -173,18 +169,21 @@ public class PetCoreViewModel: ObservableObject {
         }
     }
 
-    public func setPetBreed(_ selectedPetBreed: String?) {
-        guard let selectedPetBreed: String = selectedPetBreed else {
-            fatalError("selectedPetType is nil - cannot set")
+    public var canProceedToNextStep: Bool {
+        switch currentStep {
+            case 0:
+                return !(petName.isEmpty ?? true) && !petType.isEmpty
+            case 1:
+                return !petBreed.isEmpty
+//            case 2:
+//                return !petWeight.isEmpty
+            default:
+                return true
         }
-        self.petBreed = selectedPetBreed
-        print(self.petBreed)
     }
     
-    private func setAlert(message: String, success: Bool) {
-        self.alertMessage = message
-        self.isSuccess = success
-        self.showAlert = true
+    public var isFormComplete: Bool {
+        return !(petName.isEmpty ?? true) && !petType.isEmpty && !petBreed.isEmpty && !petWeight.isEmpty
     }
     
     private func failureResponse(_ message: String) -> ResponseModel<String> {
@@ -198,7 +197,74 @@ public class PetCoreViewModel: ObservableObject {
         }
         return ResponseModel<String>(data: message, error: nil)
     }
+}
+
+// MARK: - Setters
+extension PetCoreViewModel {
+    public func setSelectedPet(_ pet: PetModel) {
+        self.selectedPet = pet
+        self.petImage = pet.image
+        self.originalPetImage = pet.image
+        self.hasNewImageSelected = false
+    }
     
+    public func setPetImage(_ image: ImageModel?) {
+        self.petImage = image
+        checkForNewImageSelection()
+    }
+    
+    public func setPetType(_ selectedPetType: String?) {
+        guard let selectedPetType: String = selectedPetType else {
+            fatalError("selectedPetType is nil - cannot set")
+        }
+        self.petType = selectedPetType
+        print(self.petType)
+    }
+    
+    public func setPetBreed(_ selectedPetBreed: String?, breedID: String?) {
+        guard let selectedPetBreed: String = selectedPetBreed else {
+            fatalError("selectedPetBreed is nil - cannot set")
+        }
+        self.petBreed = selectedPetBreed
+        self.petBreedID = breedID ?? ""
+        print(self.petBreed)
+    }
+    
+    public func setPetGender(_ selectedPetGender: String?) {
+        guard let selectedPetGender: String = selectedPetGender else {
+            fatalError("selectedPetGender is nil - cannot set")
+        }
+        self.petGender = selectedPetGender
+        print(self.petGender)
+    }
+    
+    public func setPetSize(_ selectedPetSize: String?) {
+        guard let selectedPetSize: String = selectedPetSize else {
+            fatalError("selectedPetSize is nil - cannot set")
+        }
+        self.petSize = selectedPetSize
+        print(self.petSize)
+    }
+    
+    public func setPetBirthday(_ selectedDate: Date) {
+        self.petBirthday = selectedDate
+        print("Pet birthday set to: \(selectedDate)")
+    }
+    
+    public func setPetAdoptionDate(_ selectedDate: Date) {
+        self.petAdoptionDate = selectedDate
+        print("Pet adoption date set to: \(selectedDate)")
+    }
+    
+    private func setAlert(message: String, success: Bool) {
+        self.alertMessage = message
+        self.isSuccess = success
+        self.showAlert = true
+    }
+}
+
+// MARK: - Date Helpers
+extension PetCoreViewModel {
     public func calculateAge(from dateString: String) -> String? {
         // First try ISO8601DateFormatter for the backend format (2022-08-02T00:00:00.000Z)
         let iso8601Formatter: ISO8601DateFormatter = ISO8601DateFormatter()
@@ -284,5 +350,31 @@ public class PetCoreViewModel: ObservableObject {
         
         // If all parsing fails, return the original string
         return dateString
+    }
+    
+    // Helper method to convert Date to String for API calls
+    public func dateToString(_ date: Date) -> String {
+        let formatter: DateFormatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.string(from: date)
+    }
+    
+    // Helper method to convert String to Date for display
+    public func stringToDate(_ dateString: String) -> Date {
+        let iso8601Formatter: ISO8601DateFormatter = ISO8601DateFormatter()
+        iso8601Formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        let inputFormatter: DateFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        if let date: Date = iso8601Formatter.date(from: dateString) {
+            return date
+        } else if let date: Date = inputFormatter.date(from: dateString) {
+            return date
+        }
+        
+        return Date()
     }
 }
