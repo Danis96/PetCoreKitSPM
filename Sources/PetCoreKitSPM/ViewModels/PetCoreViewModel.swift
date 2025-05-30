@@ -31,6 +31,7 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var petImage: ImageModel?
     @Published public var petTypeList: [PetTypeModel] = []
     @Published public var breeds: [BreedModel] = []
+    @Published public var selectedBreed: BreedModel? = nil
     
     @Published public var hasNewImageSelected: Bool = false
     private var originalPetImage: ImageModel?
@@ -55,8 +56,12 @@ public class PetCoreViewModel: ObservableObject {
     public let genders: [String] = ["MALE", "FEMALE", "INTERSEX"]
     @Published public var petSize: String = "SMALL"
     public let sizes: [String] = ["SMALL", "MEDIUM", "LARGE"]
+    
     @Published public var petBirthday: Date = Date()
     @Published public var petAdoptionDate: Date = Date()
+    // Date validation error properties
+    @Published public var birthdayValidationError: String? = nil
+    @Published public var adoptionDateValidationError: String? = nil
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -153,21 +158,6 @@ public class PetCoreViewModel: ObservableObject {
             return failureResponse(error.description)
         }
     }
-    
-    public func fetchBreeds() async -> ResponseModel<String> {
-        do {
-            let response = try await breedDataSource.getBreeds(petSpecie: petType)
-            
-            if response.isSuccess {
-                breeds = response.data ?? []
-                return ResponseModel<String>(data: "Success", error: nil)
-            } else {
-                return ResponseModel<String>(data: nil, error: response.error ?? "")
-            }
-        } catch {
-            return ResponseModel<String>(data: nil, error: error.localizedDescription)
-        }
-    }
 
     public var canProceedToNextStep: Bool {
         switch currentStep {
@@ -175,8 +165,8 @@ public class PetCoreViewModel: ObservableObject {
                 return !(petName.isEmpty ?? true) && !petType.isEmpty
             case 1:
                 return !petBreed.isEmpty
-//            case 2:
-//                return !petWeight.isEmpty
+            case 2:
+                return !petGender.isEmpty
             default:
                 return true
         }
@@ -201,6 +191,7 @@ public class PetCoreViewModel: ObservableObject {
 
 // MARK: - Setters
 extension PetCoreViewModel {
+    
     public func setSelectedPet(_ pet: PetModel) {
         self.selectedPet = pet
         self.petImage = pet.image
@@ -247,13 +238,43 @@ extension PetCoreViewModel {
     }
     
     public func setPetBirthday(_ selectedDate: Date) {
-        self.petBirthday = selectedDate
-        print("Pet birthday set to: \(selectedDate)")
+        if let validationError: String = validateDate(selectedDate, dateType: "birthday") {
+            self.birthdayValidationError = validationError
+            setAlert(message: validationError, success: false)
+        } else {
+            self.birthdayValidationError = nil
+            self.petBirthday = selectedDate
+            print("Pet birthday set to: \(selectedDate)")
+        }
     }
     
     public func setPetAdoptionDate(_ selectedDate: Date) {
-        self.petAdoptionDate = selectedDate
-        print("Pet adoption date set to: \(selectedDate)")
+        if let validationError: String = validateDate(selectedDate, dateType: "adoption date") {
+            self.adoptionDateValidationError = validationError
+            setAlert(message: validationError, success: false)
+        } else {
+            self.adoptionDateValidationError = nil
+            self.petAdoptionDate = selectedDate
+            print("Pet adoption date set to: \(selectedDate)")
+        }
+    }
+    
+    /// Sets adoption date to be the same as birthday
+    public func setAdoptionDateSameAsBirthday() {
+        self.petAdoptionDate = self.petBirthday
+        self.adoptionDateValidationError = nil
+        print("Adoption date set to same as birthday: \(self.petBirthday)")
+    }
+    
+    /// Determines if the "Same as birthday" button should be shown
+    public var shouldShowSameAsBirthdayButton: Bool {
+        let calendar: Calendar = Calendar.current
+        let today: Date = Date()
+        
+        // Show button if birthday is set to a past date (valid) and not equal to adoption date
+        return !calendar.isDate(petBirthday, inSameDayAs: today) && 
+               petBirthday < today && 
+               !calendar.isDate(petBirthday, inSameDayAs: petAdoptionDate)
     }
     
     private func setAlert(message: String, success: Bool) {
@@ -265,6 +286,50 @@ extension PetCoreViewModel {
 
 // MARK: - Date Helpers
 extension PetCoreViewModel {
+    
+    /// Validates that a date is not in the future or present day
+    /// - Parameters:
+    ///   - date: The date to validate
+    ///   - dateType: The type of date being validated (for error messages)
+    /// - Returns: Error message if validation fails, nil if valid
+    private func validateDate(_ date: Date, dateType: String) -> String? {
+        let calendar: Calendar = Calendar.current
+        let today: Date = Date()
+        
+        // Check if date is today
+        if calendar.isDate(date, inSameDayAs: today) {
+            return "The \(dateType) cannot be today. Please select a past date."
+        }
+        
+        // Check if date is in the future
+        if date > today {
+            return "The \(dateType) cannot be in the future. Please select a past date."
+        }
+        
+        return nil
+    }
+    
+    /// Checks if birthday is valid (not today or future)
+    public var isBirthdayValid: Bool {
+        return birthdayValidationError == nil
+    }
+    
+    /// Checks if adoption date is valid (not today or future)
+    public var isAdoptionDateValid: Bool {
+        return adoptionDateValidationError == nil
+    }
+    
+    /// Checks if both dates are valid
+    public var areDatesValid: Bool {
+        return isBirthdayValid && isAdoptionDateValid
+    }
+    
+    /// Validates both birthday and adoption date
+    public func validateAllDates() {
+        setPetBirthday(petBirthday)
+        setPetAdoptionDate(petAdoptionDate)
+    }
+    
     public func calculateAge(from dateString: String) -> String? {
         // First try ISO8601DateFormatter for the backend format (2022-08-02T00:00:00.000Z)
         let iso8601Formatter: ISO8601DateFormatter = ISO8601DateFormatter()
