@@ -59,6 +59,8 @@ public class PetCoreViewModel: ObservableObject {
     
     @Published public var petBirthday: Date = Date()
     @Published public var petAdoptionDate: Date = Date()
+    private var petBirthdayStringForAPI: String = ""
+    private var petAdoptionDateStringForAPI: String = ""
     // Date validation error properties
     @Published public var birthdayValidationError: String? = nil
     @Published public var adoptionDateValidationError: String? = nil
@@ -158,6 +160,16 @@ public class PetCoreViewModel: ObservableObject {
             return failureResponse(error.description)
         }
     }
+    
+    public func createPet() async -> ResponseModel<String> {
+        do {
+          let pet = addAndReturnPetForCreation()
+          let response = try await petCoreDataSource.addPet(pet: pet)
+          return ResponseModel<String>(data: "Success", error: nil)
+        } catch let error as NSError {
+            return failureResponse(error.description)
+        }
+    }
 
     public var canProceedToNextStep: Bool {
         switch currentStep {
@@ -172,10 +184,6 @@ public class PetCoreViewModel: ObservableObject {
             default:
                 return true
         }
-    }
-    
-    public var isFormComplete: Bool {
-        return !(petName.isEmpty ?? true) && !petType.isEmpty && !petBreed.isEmpty && !petWeight.isEmpty
     }
     
     private func failureResponse(_ message: String) -> ResponseModel<String> {
@@ -216,6 +224,10 @@ public class PetCoreViewModel: ObservableObject {
                 setAlert(message: "Pet weight is required to proceed", success: false)
                 return false
             }
+            if !isWeightValid {
+                setAlert(message: "Please enter a valid weight (numbers only)", success: false)
+                return false
+            }
             if petSize.isEmpty {
                 setAlert(message: "Pet size is required to proceed", success: false)
                 return false
@@ -229,6 +241,31 @@ public class PetCoreViewModel: ObservableObject {
 
 // MARK: - Setters
 extension PetCoreViewModel {
+    
+    private func addAndReturnPetForCreation() -> PetModel {
+        
+        petBirthdayStringForAPI = dateToString(petBirthday)
+        petAdoptionDateStringForAPI = dateToString(petAdoptionDate)
+        
+        let pet = PetModel(
+            ownerID: user?.id ?? "",
+            name: petName,
+            breedID: petBreedID,
+            breedName: petBreed,
+            dateOfBirth: petBirthdayStringForAPI,
+            adoptionDate: petAdoptionDateStringForAPI,
+            gender: petGender,
+            isLost: false,
+            size: petSize,
+            petType: petType,
+            weightValue: petWeight,
+            description: petDescription,
+            image: petImage,
+            weight: petWeightAsDouble
+        )
+        
+        return pet
+    }
     
     public func setSelectedPet(_ pet: PetModel) {
         self.selectedPet = pet
@@ -479,5 +516,20 @@ extension PetCoreViewModel {
         }
         
         return Date()
+    }
+}
+
+// MARK: - Weight Conversion Helper
+extension PetCoreViewModel {
+    
+    /// Converts the petWeight string to a Double for API usage
+    var petWeightAsDouble: Double {
+        return Double(petWeight.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0.0
+    }
+    
+    /// Validates that the weight is a valid number
+    var isWeightValid: Bool {
+        guard !petWeight.isEmpty else { return false }
+        return Double(petWeight.trimmingCharacters(in: .whitespacesAndNewlines)) != nil
     }
 }
