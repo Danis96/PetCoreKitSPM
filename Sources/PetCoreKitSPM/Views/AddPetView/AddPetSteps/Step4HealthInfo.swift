@@ -16,96 +16,98 @@ struct Step4HealthInfo: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Health information")
-                .font(.title2)
-                .fontWeight(.semibold)
-            
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Weight (kg)")
-                    .font(.headline)
-                
-                HStack {
-                    SQATextField(placeholder: "Enter weight", text: $petVM.petWeight, keyboardType: .number)
-                    Text("kg").foregroundColor(.gray)
-                }
-            }
+            headerTitle
+            weightSection
+            sizeSection
+            genderSection
+            birthdaySection
+            sameAsBirthdayButton
+            adoptionDateSection
+            Spacer()
+        }
+    }
+}
 
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Size")
-                    .font(.headline)
-                
-                Picker("Select Size", selection: Binding<String>(
+// MARK: - UI Components
+private extension Step4HealthInfo {
+    
+    var headerTitle: some View {
+        Text("Health information")
+            .font(.title2)
+            .fontWeight(.semibold)
+    }
+    
+    var weightSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionTitle("Weight (kg)")
+            
+            HStack {
+                SQATextField(
+                    placeholder: "Enter weight",
+                    text: $petVM.petWeight,
+                    keyboardType: .number
+                )
+                Text("kg").foregroundColor(.gray)
+            }
+        }
+    }
+    
+    var sizeSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionTitle("Size")
+            
+            createPicker(
+                title: "Select Size",
+                selection: Binding<String>(
                     get: { petVM.petSize },
                     set: { newValue in petVM.setPetSize(newValue) }
-                )) {
-                    ForEach(petVM.sizes, id: \.self) { size in
-                        Text(size.capitalized)
-                            .tag(size)
-                    }
-                }
-                .pickerStyle(PalettePickerStyle())
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-            }
+                ),
+                options: petVM.sizes
+            )
+        }
+    }
+    
+    var genderSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionTitle("Gender")
             
-            // MARK: - Gender Picker Section
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Gender")
-                    .font(.headline)
-                
-                Picker("Select Gender", selection: Binding<String>(
+            createPicker(
+                title: "Select Gender",
+                selection: Binding<String>(
                     get: { petVM.petGender },
                     set: { newValue in petVM.setPetGender(newValue) }
-                )) {
-                    ForEach(petVM.genders, id: \.self) { gender in
-                        Text(gender.capitalized)
-                            .tag(gender)
-                    }
-                }
-                .pickerStyle(PalettePickerStyle())
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-            }
+                ),
+                options: petVM.genders
+            )
+        }
+    }
+    
+    var birthdaySection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionTitle("Birthday")
             
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Birthday")
-                    .font(.headline)
-                
-                HStack {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.blue.opacity(0.8))
-                            .frame(width: 40, height: 40)
-                        
-                        Image(systemName: "calendar")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.white)
-                    }
-                    DatePicker(
-                        "",
-                        selection: Binding<Date>(
-                            get: { petVM.petBirthday },
-                            set: { newValue in petVM.setPetBirthday(newValue) }
-                        ),
-                        displayedComponents: .date
-                    )
-                    .datePickerStyle(CompactDatePickerStyle())
-                   
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-            }
-            
-            // Same as birthday button
+            createDatePicker(
+                icon: "calendar",
+                selection: Binding<Date>(
+                    get: { petVM.petBirthday },
+                    set: { newValue in petVM.setPetBirthday(newValue) }
+                )
+            )
+        }
+    }
+    
+    var sameAsBirthdayButton: some View {
+        Group {
             if petVM.shouldShowSameAsBirthdayButton {
                 HStack {
                     Spacer()
                     
-                    SQAButton(title: "Same as birthday", icon: "arrow.down.circle.fill", style: .outline, size: .small) {
+                    SQAButton(
+                        title: "Same as birthday",
+                        icon: "arrow.down.circle.fill",
+                        style: .outline,
+                        size: .small
+                    ) {
                         petVM.setAdoptionDateSameAsBirthday()
                     }
                     .frame(width: 200)
@@ -116,39 +118,87 @@ struct Step4HealthInfo: View {
                 }
                 .padding(.vertical, 8)
             }
-            
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Adoption Date")
-                    .font(.headline)
-                
-                HStack {
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.blue.opacity(0.8))
-                            .frame(width: 40, height: 40)
-                        
-                        Image(systemName: "house")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.white)
-                    }
-                    
-                    DatePicker(
-                        "",
-                        selection: Binding<Date>(
-                            get: { petVM.petAdoptionDate },
-                            set: { newValue in petVM.setPetAdoptionDate(newValue) }
-                        ),
-                        displayedComponents: .date
-                    )
-                    .datePickerStyle(CompactDatePickerStyle())
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-            }
-            
-            Spacer()
         }
+    }
+    
+    var adoptionDateSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionTitle("Adoption Date")
+            
+            createDatePicker(
+                icon: "house",
+                selection: Binding<Date>(
+                    get: { petVM.petAdoptionDate },
+                    set: { newValue in petVM.setPetAdoptionDate(newValue) }
+                )
+            )
+        }
+    }
+}
+
+// MARK: - Helper Methods
+private extension Step4HealthInfo {
+    
+    func sectionTitle(_ title: String) -> some View {
+        Text(title)
+            .font(.headline)
+    }
+    
+    func createPicker(
+        title: String,
+        selection: Binding<String>,
+        options: [String]
+    ) -> some View {
+        Picker(title, selection: selection) {
+            ForEach(options, id: \.self) { option in
+                Text(option.capitalized)
+                    .tag(option)
+            }
+        }
+        .pickerStyle(PalettePickerStyle())
+        .pickerBackground()
+    }
+    
+    func createDatePicker(
+        icon: String,
+        selection: Binding<Date>
+    ) -> some View {
+        HStack {
+            createIconBackground(icon: icon)
+            
+            DatePicker(
+                "",
+                selection: selection,
+                displayedComponents: .date
+            )
+            .datePickerStyle(CompactDatePickerStyle())
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+    }
+    
+    func createIconBackground(icon: String) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.blue.opacity(0.8))
+                .frame(width: 40, height: 40)
+            
+            Image(systemName: icon)
+                .font(.system(size: 18, weight: .medium))
+                .foregroundColor(.white)
+        }
+    }
+}
+
+// MARK: - View Modifiers
+private extension View {
+    
+    func pickerBackground() -> some View {
+        self
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
     }
 }
 

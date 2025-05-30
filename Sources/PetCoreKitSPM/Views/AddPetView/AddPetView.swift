@@ -32,6 +32,13 @@ struct AddPetView: View {
                  Text("Add New Pet")
              }
          })
+        .alert(isPresented: $petVM.showAlert) {
+            Alert(
+                title: Text(petVM.isSuccess ? "Success" : "Validation Error"),
+                message: Text(petVM.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
         .onAppear {
             Task {
                 try await petVM.fetchPetType()
@@ -122,28 +129,32 @@ extension AddPetView {
             
             if petVM.currentStep < petVM.totalSteps - 1 {
                 SQAButton(title: "Next", style: .primary, size: .medium) {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        if petVM.currentStep == 0 {
-                            Task {
-                                await fetchBreedData()
-                            }
-                        }
-                        if petVM.currentStep == 2 {
-                            Task {
-                               try await uploadPetPicture()
-                            }
-                        }
+                    if petVM.validateCurrentStepAndShowAlert() {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            petVM.currentStep += 1
+                            if petVM.currentStep == 0 {
+                                Task {
+                                    await fetchBreedData()
+                                }
+                            }
+                            if petVM.currentStep == 2 {
+                                Task {
+                                   try await uploadPetPicture()
+                                }
+                            }
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                petVM.currentStep += 1
+                            }
                         }
                     }
-                }.disabled(!petVM.canProceedToNextStep)
-                
+                }
             } else {
                 SQAButton(title: "Save Pet") {
-                    savePet()
+                    if petVM.isFormComplete {
+                        savePet()
+                    } else {
+                        print("Please complete all required fields before saving")
+                    }
                 }
-                .disabled(!petVM.isFormComplete)
             }
         }
         .padding()

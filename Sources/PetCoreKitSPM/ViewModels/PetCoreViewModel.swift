@@ -166,7 +166,9 @@ public class PetCoreViewModel: ObservableObject {
             case 1:
                 return !petBreed.isEmpty
             case 2:
-                return !petGender.isEmpty
+                return !petDescription.isEmpty
+            case 3:
+                return !petWeight.isEmpty && !petSize.isEmpty
             default:
                 return true
         }
@@ -186,6 +188,42 @@ public class PetCoreViewModel: ObservableObject {
             setAlert(message: message, success: true)
         }
         return ResponseModel<String>(data: message, error: nil)
+    }
+    
+    public func validateCurrentStepAndShowAlert() -> Bool {
+        switch currentStep {
+        case 0:
+            if petName.isEmpty {
+                setAlert(message: "Pet name is required to proceed", success: false)
+                return false
+            }
+            if petType.isEmpty {
+                setAlert(message: "Pet type is required to proceed", success: false)
+                return false
+            }
+        case 1:
+            if petBreed.isEmpty {
+                setAlert(message: "Pet breed is required to proceed", success: false)
+                return false
+            }
+        case 2:
+            if petDescription.isEmpty {
+                setAlert(message: "Pet description is required to proceed", success: false)
+                return false
+            }
+        case 3:
+            if petWeight.isEmpty {
+                setAlert(message: "Pet weight is required to proceed", success: false)
+                return false
+            }
+            if petSize.isEmpty {
+                setAlert(message: "Pet size is required to proceed", success: false)
+                return false
+            }
+        default:
+            break
+        }
+        return true
     }
 }
 
