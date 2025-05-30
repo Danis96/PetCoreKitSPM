@@ -39,30 +39,10 @@ struct Step3PetDetails: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
             }
-            
-            // MARK: - Gender Picker Section
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Gender")
-                    .font(.headline)
-                
-                Picker("Select Gender", selection: Binding<String>(
-                    get: { petVM.petGender },
-                    set: { newValue in petVM.setPetGender(newValue) }
-                )) {
-                    ForEach(petVM.genders, id: \.self) { gender in
-                        Text(gender.capitalized)
-                            .tag(gender)
-                    }
-                }
-                .pickerStyle(PalettePickerStyle())
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-            }
-            
-            
             Spacer()
+        }
+        .onAppear {
+            petVM.setPetImage(nil)
         }
     }
 }
