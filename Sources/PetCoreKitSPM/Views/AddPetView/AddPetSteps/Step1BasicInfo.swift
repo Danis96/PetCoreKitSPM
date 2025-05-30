@@ -48,6 +48,8 @@ struct Step1BasicInfo: View {
             
             Spacer()
         }
+        // MARK: - CHECK THIS and implement
+        .dismissKeyboardOnTap()
     }
 }
 
