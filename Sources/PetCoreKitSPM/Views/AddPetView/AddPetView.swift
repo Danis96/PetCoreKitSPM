@@ -12,6 +12,7 @@ import Shared_kit
 struct AddPetView: View {
     
     @EnvironmentObject private var petVM: PetCoreViewModel
+    @EnvironmentObject private var breedVM: BreedKitViewModel
     @EnvironmentObject private var imageVM: ImageKitViewModel
     
     var body: some View {
@@ -160,7 +161,10 @@ extension AddPetView {
     }
     
     private func fetchBreedData() async {
-        await petVM.fetchBreeds()
+       let breedResponse = await breedVM.fetchBreeds(petSpecie: petVM.petType)
+        if breedResponse.isSuccess && !breedResponse.data!.isEmpty {
+            petVM.breeds = breedResponse.data ?? []
+        }
     }
 
     private func uploadPetPicture() async {

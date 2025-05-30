@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Shared_kit
 
 struct Step2PetBreed: View {
+     
     @EnvironmentObject private var petVM: PetCoreViewModel
+    @EnvironmentObject private var breedVM: BreedKitViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -32,6 +35,7 @@ struct Step2PetBreed: View {
                             isSelected: petVM.petBreed == breed.name ?? "",
                             onTap: {
                                 petVM.setPetBreed(breed.name, breedID: breed.id)
+                                breedVM.selectBreed(breedID: breed.id ?? "")
                             }
                         )
                     }
@@ -46,4 +50,5 @@ struct Step2PetBreed: View {
 #Preview {
     Step2PetBreed()
         .withPetCorePreviewDependecies()
+        .withSharedKitPreviewDependecies()
 }

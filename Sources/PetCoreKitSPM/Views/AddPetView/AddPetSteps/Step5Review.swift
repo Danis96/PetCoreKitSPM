@@ -20,20 +20,20 @@ struct Step5Review: View {
             
             VStack(spacing: 16) {
                 VStack(alignment: .center) {
-                    petImageComponent
+                    if petVM.petImage != nil {
+                        petImageComponent
+                    }
                     
                     HStack {
                         reviewRow(title: "Breed", value: petVM.petBreed)
-                        Shared_kit.startCustomBreedKit(width: 30, height: 30, icon: "pawprint") {
-                            
-                        }
+                        Shared_kit.startCustomBreedKit(width: 30, height: 30, icon: "pawprint") {}
                     }
                 }
 
                 VStack(spacing: 12) {
                     reviewRow(title: "Name", value: petVM.petName ?? "")
-                    reviewRow(title: "Age", value: "\(petVM.calculateAge(from:petVM.dateToString(petVM.petBirthday))) years")
-                    reviewRow(title: "Weight", value: String(format: "%.1f kg", petVM.petWeight))
+                    reviewRow(title: "Age", value: petVM.calculateAge(from: petVM.dateToString(petVM.petBirthday)) ?? "Unknown age")
+                    reviewRow(title: "Weight", value: "\(petVM.petWeight) kg")
                     reviewRow(title: "Size", value: petVM.petSize.capitalized)
                     
                     if !petVM.petDescription.isEmpty {
@@ -53,9 +53,6 @@ struct Step5Review: View {
             }
             
             Spacer()
-        }
-        .onAppear() {
-            breedVM.selectBreed(breedID: petVM.petBreedID)
         }
     }
 }
