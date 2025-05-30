@@ -12,6 +12,7 @@ import Shared_kit
 struct AddPetView: View {
     
     @EnvironmentObject private var petVM: PetCoreViewModel
+    @EnvironmentObject private var petCoordinator: PetCoreCoordinator
     @EnvironmentObject private var breedVM: BreedKitViewModel
     @EnvironmentObject private var imageVM: ImageKitViewModel
     
@@ -149,10 +150,8 @@ extension AddPetView {
                 }
             } else {
                 SQAButton(title: "Save Pet") {
-                    if petVM.isFormComplete {
-                        savePet()
-                    } else {
-                        print("Please complete all required fields before saving")
+                    Task {
+                       await savePet()
                     }
                 }
             }
@@ -165,10 +164,11 @@ extension AddPetView {
 
 extension AddPetView {
     // MARK: - Actions
-    private func savePet() {
-        // Implement your save logic here
-        print("Saving pet: \(petVM.petName ?? "")")
-        // You can add navigation back or show success message
+    private func savePet() async {
+       let response = try await petVM.createPet()
+        if response.isSuccess {
+            petCoordinator.navigate(to: .dashboard)
+        }
     }
     
     private func fetchBreedData() async {

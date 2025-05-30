@@ -43,6 +43,7 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
             let response = try await networkService.post(
                 path: PetCoreAPIPaths.shared.path(for: .createPet),
                 body: jsonData,
+                headers: headerHelper.getValue(type: .auth_app_json, accessToken: getAuthToken() ?? ""),
                 as: PetModel.self
             )
             
