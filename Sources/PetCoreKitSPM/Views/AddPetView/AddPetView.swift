@@ -28,6 +28,7 @@ struct AddPetView: View {
                 }
                 navigationButtons
         }
+         .dismissKeyboardOnTap()
          .toolbar(content: {
              ToolbarItem(placement: .principal) {
                  Text("Add New Pet")
@@ -114,6 +115,7 @@ extension AddPetView {
                 EmptyView()
         }
     }
+    
     
     // MARK: - Navigation Buttons
     private var navigationButtons: some View {
