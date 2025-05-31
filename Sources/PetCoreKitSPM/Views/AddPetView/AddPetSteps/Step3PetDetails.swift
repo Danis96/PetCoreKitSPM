@@ -41,6 +41,7 @@ struct Step3PetDetails: View {
             }
             Spacer()
         }
+        .dismissKeyboardOnTap()
         .onAppear {
             petVM.setPetImage(nil)
         }
