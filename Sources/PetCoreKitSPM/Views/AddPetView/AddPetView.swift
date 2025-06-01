@@ -28,7 +28,7 @@ struct AddPetView: View {
                 }
                 navigationButtons
         }
-         .dismissKeyboardOnTap()
+         .dismissKeyboardOnTap() 
          .toolbar(content: {
              ToolbarItem(placement: .principal) {
                  Text("Add New Pet")

@@ -258,7 +258,7 @@ extension PetCoreViewModel {
             isLost: false,
             size: petSize,
             petType: petType,
-            weightValue: petWeight,
+            weightValue: "kg",
             description: petDescription,
             image: petImage,
             weight: petWeightAsDouble
