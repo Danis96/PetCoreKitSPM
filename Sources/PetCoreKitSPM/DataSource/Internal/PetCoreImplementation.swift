@@ -35,7 +35,7 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
         }
     }
     
-    public func addPet(pet: PetModel) async throws -> ResponseModel<PetModel> {
+    public func addPet(pet: CreatePetModel) async throws -> ResponseModel<PetModel> {
         do {
             
             let jsonData = try JSONEncoder().encode(pet)
