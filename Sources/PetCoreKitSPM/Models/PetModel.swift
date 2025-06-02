@@ -42,6 +42,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
         case description
         case image
         case weight
+        case caretakers
     }
     
    public init(
@@ -59,7 +60,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
          weightValue: String = "",
          description: String = "",
          image: ImageModel? = nil,
-         caretakers: [String] = [],
+         caretakers: [String] = [""],
          weight: Double = 0.0)
     {
         self.id = id
@@ -76,7 +77,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
         self.weightValue = weightValue
         self.description = description
         self.image = image
-        self.weight = weight
         self.caretakers = caretakers
+        self.weight = weight
     }
 }

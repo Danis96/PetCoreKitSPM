@@ -22,6 +22,7 @@ public class PetCoreViewModel: ObservableObject {
     
     @Published public var isLoading: Bool = false
     @Published var showAlert: Bool = false
+    @Published public var showDeleteDialog: Bool = false
     @Published var alertMessage: String = ""
     @Published var isSuccess: Bool = false
     
@@ -249,13 +250,31 @@ public class PetCoreViewModel: ObservableObject {
         }
         return true
     }
+    
+
 }
 
 // MARK: - Setters
 extension PetCoreViewModel {
     
+    /// Reset AddPetView stepper
     public func resetCurrentStep(_ count: Int = 0) {
         currentStep = count
+    }
+    
+    public func resetAddPetViewData() {
+        self.petImage = nil
+        self.petType = ""
+        self.petName = ""
+        self.petDescription = ""
+        self.petWeight = ""
+        self.petBreed = ""
+        self.petAdoptionDate = Date.now
+        self.petBirthday = Date.now
+        self.petSize = "SMALL"
+        self.petGender = "MALE"
+        self.petBirthdayStringForAPI = ""
+        self.petAdoptionDateStringForAPI = ""
     }
     
     private func addAndReturnPetForCreation() -> PetModel {
@@ -277,7 +296,9 @@ extension PetCoreViewModel {
             weightValue: "kg",
             description: petDescription,
             image: petImage,
-            weight: petWeightAsDouble
+            caretakers: [""],
+            weight: petWeightAsDouble,
+            
         )
         
         return pet
@@ -292,7 +313,6 @@ extension PetCoreViewModel {
     
     public func setPetImage(_ image: ImageModel?) {
         self.petImage = image
-        checkForNewImageSelection()
     }
     
     public func setPetType(_ selectedPetType: String?) {
@@ -355,6 +375,11 @@ extension PetCoreViewModel {
         self.petAdoptionDate = self.petBirthday
         self.adoptionDateValidationError = nil
         print("Adoption date set to same as birthday: \(self.petBirthday)")
+    }
+    
+    /// Delete Confirmation dialog control bool
+    public func setShowDeleteDialog(_ value: Bool) {
+        showDeleteDialog = value
     }
     
     /// Determines if the "Same as birthday" button should be shown

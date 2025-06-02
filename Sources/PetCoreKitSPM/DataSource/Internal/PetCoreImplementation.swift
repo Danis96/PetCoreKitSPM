@@ -39,7 +39,11 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
     public func addPet(pet: PetModel) async throws -> ResponseModel<PetModel> {
         do {
             
-            let jsonData = try JSONEncoder().encode(pet)
+            // Create encoder with pretty printing for human-readable output
+            let encoder: JSONEncoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            
+            let jsonData: Data = try encoder.encode(pet)
             
             let response = try await networkService.post(
                 path: PetCoreAPIPaths.shared.path(for: .createPet),
