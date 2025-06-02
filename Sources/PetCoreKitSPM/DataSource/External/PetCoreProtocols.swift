@@ -10,7 +10,7 @@ import Shared_kit
 import SwiftUI
 
 public protocol PetCoreDataSourceProtocol: Sendable {
-    func addPet(pet: CreatePetModel) async throws -> ResponseModel<PetModel>
+    func addPet(pet: PetModel) async throws -> ResponseModel<PetModel>
     func fetchOwnerPets(ownerID: String) async throws -> ResponseModel<[PetModel]>
     func fetchPetById(petID: String) async throws -> ResponseModel<PetModel>
     func fetchUserById(userID: String) async throws -> ResponseModel<UserModel>
