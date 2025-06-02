@@ -171,6 +171,18 @@ public class PetCoreViewModel: ObservableObject {
         }
     }
 
+    public func deletePet() async -> ResponseModel<String> {
+        do {
+            guard let petID: String = selectedPet?.id else {
+                fatalError("selectedPetID is nil - cannot delete pet")
+            }
+          let response = try await petCoreDataSource.deletePet(petID: petID)
+          return successResponse("Success deletion")
+        } catch let error as NSError {
+            return failureResponse(error.description)
+        }
+    }
+
     public var canProceedToNextStep: Bool {
         switch currentStep {
             case 0:
@@ -241,6 +253,10 @@ public class PetCoreViewModel: ObservableObject {
 
 // MARK: - Setters
 extension PetCoreViewModel {
+    
+    public func resetCurrentStep(_ count: Int = 0) {
+        currentStep = count
+    }
     
     private func addAndReturnPetForCreation() -> PetModel {
         

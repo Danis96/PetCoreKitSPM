@@ -12,6 +12,7 @@ import SQAUtility
 struct PetProfileView: View {
     
     @EnvironmentObject var petVM: PetCoreViewModel
+    @EnvironmentObject var petCoordinator: PetCoreCoordinator
     @EnvironmentObject var breedVM: BreedKitViewModel
     @EnvironmentObject var imageVM: ImageKitViewModel
     @Injected(\SQAUtility.colorHelper) var colorHelper: ColorHelper
@@ -45,7 +46,9 @@ struct PetProfileView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button("") {
-                    print("Open delete dialog")
+                    Task {
+                       try await deletePet()
+                    }
                 }
                 .background(Image(systemName: "trash.fill").resizable().scaledToFit() .frame(width: 20, height: 20).foregroundColor(.red))
                 .padding(.trailing, 10)
@@ -282,6 +285,13 @@ extension PetProfileView {
     
     private func changePetImage() async throws {
         let response = try await petVM.savePetImage()
+    }
+    
+    private func deletePet() async throws {
+        let response = try await petVM.deletePet()
+        if response.isSuccess {
+            petCoordinator.popToRoot()
+        }
     }
 }
 

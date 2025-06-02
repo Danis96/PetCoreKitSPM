@@ -22,7 +22,8 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
     
     public func fetchUserById(userID: String) async throws -> ResponseModel<UserModel> {
         do {
-           
+            print(getAuthToken() ?? "")
+            print(userID)
             let response = try await networkService.get(
                 path: PetCoreAPIPaths.shared.path(for: .getUserByID, concatValue: userID),
                 headers: headerHelper.getValue(type: .auth_app_json, accessToken: getAuthToken() ?? ""),
@@ -35,7 +36,7 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
         }
     }
     
-    public func addPet(pet: CreatePetModel) async throws -> ResponseModel<PetModel> {
+    public func addPet(pet: PetModel) async throws -> ResponseModel<PetModel> {
         do {
             
             let jsonData = try JSONEncoder().encode(pet)
@@ -107,6 +108,7 @@ public final class PetCoreDataSourceImplementation: PetCoreDataSourceProtocol, @
             
             _ = try await networkService.delete(
                 path: PetCoreAPIPaths.shared.path(for: .deletePet, concatValue: petID),
+                headers: headerHelper.getValue(type: .auth_app_json, accessToken: getAuthToken() ?? ""),
                 as: EmptyResponse.self
             )
             

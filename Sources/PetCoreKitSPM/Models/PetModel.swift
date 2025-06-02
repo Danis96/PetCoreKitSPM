@@ -24,6 +24,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
     var description: String?
     var image: ImageModel?
     var weight: Double?
+    var caretakers: [String] = []
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -44,7 +45,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
     }
     
    public init(
-         id: String = "",
+         id: String? = nil,
          ownerID: String = "",
          name: String = "",
          breedID: String = "",
@@ -58,6 +59,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
          weightValue: String = "",
          description: String = "",
          image: ImageModel? = nil,
+         caretakers: [String] = [],
          weight: Double = 0.0)
     {
         self.id = id
@@ -75,5 +77,6 @@ public struct PetModel: Identifiable, Codable, Sendable {
         self.description = description
         self.image = image
         self.weight = weight
+        self.caretakers = caretakers
     }
 }

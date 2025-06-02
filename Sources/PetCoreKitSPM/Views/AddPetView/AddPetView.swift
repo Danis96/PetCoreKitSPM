@@ -28,7 +28,7 @@ struct AddPetView: View {
                 }
                 navigationButtons
         }
-         .dismissKeyboardOnTap() 
+         .dismissKeyboardOnTap()
          .toolbar(content: {
              ToolbarItem(placement: .principal) {
                  Text("Add New Pet")
@@ -170,6 +170,7 @@ extension AddPetView {
        let response = try await petVM.createPet()
         if response.isSuccess {
             petCoordinator.navigate(to: .dashboard)
+            petVM.resetCurrentStep()
         }
     }
     
