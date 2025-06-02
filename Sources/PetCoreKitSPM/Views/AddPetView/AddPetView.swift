@@ -169,8 +169,9 @@ extension AddPetView {
     private func savePet() async {
        let response = try await petVM.createPet()
         if response.isSuccess {
-            petCoordinator.navigate(to: .dashboard)
             petVM.resetCurrentStep()
+            petVM.resetAddPetViewData()
+            petCoordinator.popToRoot()
         }
     }
     

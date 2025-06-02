@@ -46,9 +46,7 @@ struct PetProfileView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button("") {
-                    Task {
-                       try await deletePet()
-                    }
+                    petVM.setShowDeleteDialog(true)
                 }
                 .background(Image(systemName: "trash.fill").resizable().scaledToFit() .frame(width: 20, height: 20).foregroundColor(.red))
                 .padding(.trailing, 10)
@@ -60,6 +58,18 @@ struct PetProfileView: View {
                 message: Text(petVM.alertMessage),
                 dismissButton: .default(Text("Ok")) { petVM.showAlert = false }
             )
+        }
+        .alert("Delete Pet", isPresented: $petVM.showDeleteDialog) {
+            Button("Cancel", role: .cancel) {
+                petVM.setShowDeleteDialog(false)
+            }
+            Button("Delete", role: .destructive) {
+                Task {
+                    try await deletePet()
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete \(petVM.selectedPet?.name ?? "this pet")? This action cannot be undone.")
         }
         .onAppear {
             Task {
