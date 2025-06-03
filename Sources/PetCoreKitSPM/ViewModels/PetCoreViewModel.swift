@@ -41,11 +41,11 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var currentStep: Int = 0
     public let totalSteps: Int = 5
     public let stepTitles: [String] = [
-        "Basic Info",
-        "Breed",
-        "Pet Details",
-        "Health Info",
-        "Review"
+        PetCoreKitSPMStrings.petCoreVM_stepTitle_basicInfo,
+        PetCoreKitSPMStrings.petCoreVM_stepTitle_breed,
+        PetCoreKitSPMStrings.petCoreVM_stepTitle_petDetails,
+        PetCoreKitSPMStrings.petCoreVM_stepTitle_healthInfo,
+        PetCoreKitSPMStrings.petCoreVM_stepTitle_review
     ]
     @Published public var petName: String = ""
     @Published public var petType: String = ""
@@ -53,10 +53,10 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var petBreedID: String = ""
     @Published public var petWeight: String = ""
     @Published public var petDescription: String = ""
-    @Published public var petGender: String = "MALE"
-    public let genders: [String] = ["MALE", "FEMALE", "INTERSEX"]
-    @Published public var petSize: String = "SMALL"
-    public let sizes: [String] = ["SMALL", "MEDIUM", "LARGE"]
+    @Published public var petGender: String = PetCoreKitSPMStrings.petCoreVM_defaultGender
+    public let genders: [String] = [PetCoreKitSPMStrings.petCoreVM_gender_male, PetCoreKitSPMStrings.petCoreVM_gender_female, PetCoreKitSPMStrings.petCoreVM_gender_intersex]
+    @Published public var petSize: String = PetCoreKitSPMStrings.petCoreVM_defaultSize
+    public let sizes: [String] = [PetCoreKitSPMStrings.petCoreVM_size_small, PetCoreKitSPMStrings.petCoreVM_size_medium, PetCoreKitSPMStrings.petCoreVM_size_large]
     
     @Published public var petBirthday: Date = Date()
     @Published public var petAdoptionDate: Date = Date()
@@ -144,7 +144,7 @@ public class PetCoreViewModel: ObservableObject {
     
     private func copyPetModelAndChangeImage() -> PetModel {
         guard let pet: PetModel = selectedPet else {
-            fatalError("selectedPet is nil - cannot copy pet model")
+            fatalError(PetCoreKitSPMStrings.petCoreVM_errorSelectedPetNil)
         }
         var changedPetModel: PetModel = pet
         changedPetModel.image = petImage
@@ -175,10 +175,10 @@ public class PetCoreViewModel: ObservableObject {
     public func deletePet() async -> ResponseModel<String> {
         do {
             guard let petID: String = selectedPet?.id else {
-                fatalError("selectedPetID is nil - cannot delete pet")
+                fatalError(PetCoreKitSPMStrings.petCoreVM_errorSelectedPetIdNil)
             }
           let response = try await petCoreDataSource.deletePet(petID: petID)
-          return successResponse("Success deletion")
+          return successResponse(PetCoreKitSPMStrings.petCoreVM_successDeletionMessage)
         } catch let error as NSError {
             return failureResponse(error.description)
         }
@@ -204,7 +204,7 @@ public class PetCoreViewModel: ObservableObject {
         return ResponseModel<String>(data: nil, error: message)
     }
     
-    private func successResponse(_ message: String = "Success", shouldSetAlert: Bool = true) -> ResponseModel<String> {
+    private func successResponse(_ message: String = PetCoreKitSPMStrings.petCoreVM_successMessage, shouldSetAlert: Bool = true) -> ResponseModel<String> {
         if shouldSetAlert {
             setAlert(message: message, success: true)
         }
@@ -215,34 +215,34 @@ public class PetCoreViewModel: ObservableObject {
         switch currentStep {
         case 0:
             if petName.isEmpty {
-                setAlert(message: "Pet name is required to proceed", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationPetNameRequired, success: false)
                 return false
             }
             if petType.isEmpty {
-                setAlert(message: "Pet type is required to proceed", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationPetTypeRequired, success: false)
                 return false
             }
         case 1:
             if petBreed.isEmpty {
-                setAlert(message: "Pet breed is required to proceed", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationPetBreedRequired, success: false)
                 return false
             }
         case 2:
             if petDescription.isEmpty {
-                setAlert(message: "Pet description is required to proceed", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationPetDescriptionRequired, success: false)
                 return false
             }
         case 3:
             if petWeight.isEmpty {
-                setAlert(message: "Pet weight is required to proceed", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationPetWeightRequired, success: false)
                 return false
             }
             if !isWeightValid {
-                setAlert(message: "Please enter a valid weight (numbers only)", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationWeightInvalid, success: false)
                 return false
             }
             if petSize.isEmpty {
-                setAlert(message: "Pet size is required to proceed", success: false)
+                setAlert(message: PetCoreKitSPMStrings.petCoreVM_validationPetSizeRequired, success: false)
                 return false
             }
         default:
@@ -271,8 +271,8 @@ extension PetCoreViewModel {
         self.petBreed = ""
         self.petAdoptionDate = Date.now
         self.petBirthday = Date.now
-        self.petSize = "SMALL"
-        self.petGender = "MALE"
+        self.petSize = PetCoreKitSPMStrings.petCoreVM_defaultSize
+        self.petGender = PetCoreKitSPMStrings.petCoreVM_defaultGender
         self.petBirthdayStringForAPI = ""
         self.petAdoptionDateStringForAPI = ""
     }
@@ -293,7 +293,7 @@ extension PetCoreViewModel {
             isLost: false,
             size: petSize,
             petType: petType,
-            weightValue: "kg",
+            weightValue: PetCoreKitSPMStrings.petCoreVM_weightUnit,
             description: petDescription,
             image: petImage,
             caretakers: [""],
@@ -317,7 +317,7 @@ extension PetCoreViewModel {
     
     public func setPetType(_ selectedPetType: String?) {
         guard let selectedPetType: String = selectedPetType else {
-            fatalError("selectedPetType is nil - cannot set")
+            fatalError(PetCoreKitSPMStrings.petCoreVM_errorSelectedPetTypeNil)
         }
         self.petType = selectedPetType
         print(self.petType)
@@ -325,7 +325,7 @@ extension PetCoreViewModel {
     
     public func setPetBreed(_ selectedPetBreed: String?, breedID: String?) {
         guard let selectedPetBreed: String = selectedPetBreed else {
-            fatalError("selectedPetBreed is nil - cannot set")
+            fatalError(PetCoreKitSPMStrings.petCoreVM_errorSelectedPetBreedNil)
         }
         self.petBreed = selectedPetBreed
         self.petBreedID = breedID ?? ""
@@ -334,7 +334,7 @@ extension PetCoreViewModel {
     
     public func setPetGender(_ selectedPetGender: String?) {
         guard let selectedPetGender: String = selectedPetGender else {
-            fatalError("selectedPetGender is nil - cannot set")
+            fatalError(PetCoreKitSPMStrings.petCoreVM_errorSelectedPetGenderNil)
         }
         self.petGender = selectedPetGender
         print(self.petGender)
@@ -342,31 +342,31 @@ extension PetCoreViewModel {
     
     public func setPetSize(_ selectedPetSize: String?) {
         guard let selectedPetSize: String = selectedPetSize else {
-            fatalError("selectedPetSize is nil - cannot set")
+            fatalError(PetCoreKitSPMStrings.petCoreVM_errorSelectedPetSizeNil)
         }
         self.petSize = selectedPetSize
         print(self.petSize)
     }
     
     public func setPetBirthday(_ selectedDate: Date) {
-        if let validationError: String = validateDate(selectedDate, dateType: "birthday") {
+        if let validationError: String = validateDate(selectedDate, dateType: PetCoreKitSPMStrings.petCoreVM_dateTypeBirthday) {
             self.birthdayValidationError = validationError
             setAlert(message: validationError, success: false)
         } else {
             self.birthdayValidationError = nil
             self.petBirthday = selectedDate
-            print("Pet birthday set to: \(selectedDate)")
+            print(PetCoreKitSPMStrings.petCoreVM_debugBirthdaySet.replacingOccurrences(of: "{selectedDate}", with: "\(selectedDate)"))
         }
     }
     
     public func setPetAdoptionDate(_ selectedDate: Date) {
-        if let validationError: String = validateDate(selectedDate, dateType: "adoption date") {
+        if let validationError: String = validateDate(selectedDate, dateType: PetCoreKitSPMStrings.petCoreVM_dateTypeAdoption) {
             self.adoptionDateValidationError = validationError
             setAlert(message: validationError, success: false)
         } else {
             self.adoptionDateValidationError = nil
             self.petAdoptionDate = selectedDate
-            print("Pet adoption date set to: \(selectedDate)")
+            print(PetCoreKitSPMStrings.petCoreVM_debugAdoptionDateSet.replacingOccurrences(of: "{selectedDate}", with: "\(selectedDate)"))
         }
     }
     
@@ -374,7 +374,7 @@ extension PetCoreViewModel {
     public func setAdoptionDateSameAsBirthday() {
         self.petAdoptionDate = self.petBirthday
         self.adoptionDateValidationError = nil
-        print("Adoption date set to same as birthday: \(self.petBirthday)")
+        print(PetCoreKitSPMStrings.petCoreVM_debugAdoptionSameAsBirthday.replacingOccurrences(of: "{petBirthday}", with: "\(self.petBirthday)"))
     }
     
     /// Delete Confirmation dialog control bool
@@ -414,12 +414,12 @@ extension PetCoreViewModel {
         
         // Check if date is today
         if calendar.isDate(date, inSameDayAs: today) {
-            return "The \(dateType) cannot be today. Please select a past date."
+            return PetCoreKitSPMStrings.petCoreVM_dateValidationToday.replacingOccurrences(of: "{dateType}", with: dateType)
         }
         
         // Check if date is in the future
         if date > today {
-            return "The \(dateType) cannot be in the future. Please select a past date."
+            return PetCoreKitSPMStrings.petCoreVM_dateValidationFuture.replacingOccurrences(of: "{dateType}", with: dateType)
         }
         
         return nil
@@ -484,11 +484,11 @@ extension PetCoreViewModel {
         
         if let years: Int = components.year, let months: Int = components.month {
             if years > 0 {
-                return years == 1 ? "1 year old" : "\(years) years old"
+                return years == 1 ? PetCoreKitSPMStrings.petCoreVM_ageOneYear : PetCoreKitSPMStrings.petCoreVM_ageMultipleYears.replacingOccurrences(of: "{years}", with: "\(years)")
             } else if months > 0 {
-                return months == 1 ? "1 month old" : "\(months) months old"
+                return months == 1 ? PetCoreKitSPMStrings.petCoreVM_ageOneMonth : PetCoreKitSPMStrings.petCoreVM_ageMultipleMonths.replacingOccurrences(of: "{months}", with: "\(months)")
             } else {
-                return "Less than 1 month old"
+                return PetCoreKitSPMStrings.petCoreVM_ageLessThanMonth
             }
         }
         

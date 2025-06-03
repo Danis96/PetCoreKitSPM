@@ -34,7 +34,7 @@ struct DashboardView: View {
                         HStack(spacing: 10) {
                             userImageComponent
                             VStack(alignment: .leading) {
-                                Text("Hello,")
+                                Text(PetCoreKitSPMStrings.petCoreDashGreeting)
                                     .font(.footnote)
                                     .foregroundColor(.gray)
                                 Text(viewModel.user?.firstName ?? "")
@@ -42,7 +42,6 @@ struct DashboardView: View {
                             }
                         }
                     }
-                    
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
                             coordinator.navigate(to: .createPet)
@@ -55,11 +54,11 @@ struct DashboardView: View {
                 }
                 .alert(isPresented: $viewModel.showAlert) {
                     Alert(
-                        title: Text(viewModel.isSuccess ? "Success" : "Error"),
+                        title: Text(viewModel.isSuccess ? PetCoreKitSPMStrings.petCoreDashSuccessTitle : PetCoreKitSPMStrings.petCoreDashErrorTitle),
                         message: Text(viewModel.alertMessage),
-                        dismissButton: .default(Text("OK")) {
+                        dismissButton: .default(Text(PetCoreKitSPMStrings.petCoreDashAlertButtonOK)) {
                             if viewModel.isSuccess {
-                                print("SUCCESS")
+                                print(PetCoreKitSPMStrings.petCoreDashSuccessMessage)
                             }
                             viewModel.showAlert = false
                         }
@@ -163,7 +162,7 @@ extension DashboardView {
     private var activePetCardList: some View {
         
         Section(header: HStack(spacing: 5) {
-            Text("Active Pet Profiles")
+            Text(PetCoreKitSPMStrings.petCoreDashActivePetProfilesTitle)
             Text("\(viewModel.userPets.count)")
                 .fontWeight(.bold)
                 .foregroundStyle(colorHelper.getColor(.blue500))
@@ -205,14 +204,14 @@ extension DashboardView {
                 .scaledToFill()
                 .frame(width: 120, height: 250)
             
-            Text("Uh Oh!")
+            Text(PetCoreKitSPMStrings.petCoreDashEmptyStateTitle)
                 .font(.title2)
-            Text("Looks like you have no profiles set up at this moment, add your pet now.")
+            Text(PetCoreKitSPMStrings.petCoreDashEmptyStateMessage)
                 .font(.subheadline)
             
             Spacer()
             
-            SQAButton(title: "Add Pet", action: {
+            SQAButton(title: PetCoreKitSPMStrings.petCoreDashAddPetButton, action: {
                 coordinator.navigate(to: .createPet)
             }
           )
