@@ -16,12 +16,12 @@ struct Step2PetBreed: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             
-            Text("Choose your \(petVM.petType.capitalized) breed")
+            Text(PetCoreKitSPMStrings.petCoreAddS2ChooseBreedTitle.replacingOccurrences(of: "{petType}", with: petVM.petType.capitalized))
                 .font(.title2)
                 .fontWeight(.semibold)
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("Pet Breed")
+                Text(PetCoreKitSPMStrings.petCoreAddS2PetBreedLabel)
                     .font(.headline)
                 
                 LazyVGrid(columns: [
