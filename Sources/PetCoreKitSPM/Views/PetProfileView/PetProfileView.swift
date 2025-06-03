@@ -40,7 +40,7 @@ struct PetProfileView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Pet Profile")
+                Text(PetCoreKitSPMStrings.petCoreNavigationTitle)
                     .font(.headline)
                     .foregroundColor(.black)
             }
@@ -54,22 +54,22 @@ struct PetProfileView: View {
         }
         .alert(isPresented: $petVM.showAlert) {
             Alert(
-                title: Text(petVM.isSuccess ? "Success" : "Error"),
+                title: Text(petVM.isSuccess ? PetCoreKitSPMStrings.petCoreAlertSuccessTitle : PetCoreKitSPMStrings.petCoreAlertErrorTitle),
                 message: Text(petVM.alertMessage),
-                dismissButton: .default(Text("Ok")) { petVM.showAlert = false }
+                dismissButton: .default(Text(PetCoreKitSPMStrings.petCoreAlertDismissButton)) { petVM.showAlert = false }
             )
         }
-        .alert("Delete Pet", isPresented: $petVM.showDeleteDialog) {
-            Button("Cancel", role: .cancel) {
+        .alert(PetCoreKitSPMStrings.petCoreDeleteAlertTitle, isPresented: $petVM.showDeleteDialog) {
+            Button(PetCoreKitSPMStrings.petCoreDeleteAlertCancelButton, role: .cancel) {
                 petVM.setShowDeleteDialog(false)
             }
-            Button("Delete", role: .destructive) {
+            Button(PetCoreKitSPMStrings.petCoreDeleteAlertDeleteButton, role: .destructive) {
                 Task {
                     try await deletePet()
                 }
             }
         } message: {
-            Text("Are you sure you want to delete \(petVM.selectedPet?.name ?? "this pet")? This action cannot be undone.")
+            Text(PetCoreKitSPMStrings.petCoreDeleteAlertMessage.replacingOccurrences(of: "{petName}", with: petVM.selectedPet?.name ?? PetCoreKitSPMStrings.petCoreDeleteAlertFallbackName))
         }
         .onAppear {
             Task {
@@ -92,7 +92,7 @@ extension PetProfileView {
     private var petImageWithEditButton: some View {
         ImageKitCoordinator.shared.start(
             selectedImage: $petVM.petImage,
-            placeholderText: "Edit pet image",
+            placeholderText: PetCoreKitSPMStrings.petCoreImagePlaceholderText,
             type: .userProfile,
             typeID: petVM.user?.id ?? "",
             allowInternalUse: false,
@@ -102,7 +102,7 @@ extension PetProfileView {
     private var petNameAndBreedInfo: some View {
         VStack(spacing: 8) {
             HStack {
-                Text(petVM.selectedPet?.name ?? "Unknown Pet")
+                Text(petVM.selectedPet?.name ?? PetCoreKitSPMStrings.petCoreUnknownPet)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
@@ -114,7 +114,7 @@ extension PetProfileView {
                 ) {}
             }
             
-            Text("\(petVM.selectedPet?.petType?.capitalized ?? "Pet") | \(breedVM.selectedBreed?.name ?? petVM.selectedPet?.breedName ?? "Unknown Breed")")
+            Text("\(petVM.selectedPet?.petType?.capitalized ?? PetCoreKitSPMStrings.petCorePetTypeFallback) | \(breedVM.selectedBreed?.name ?? petVM.selectedPet?.breedName ?? PetCoreKitSPMStrings.petCoreUnknownBreed)")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
@@ -125,9 +125,9 @@ extension PetProfileView {
 extension PetProfileView {
     private var petAppearanceSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionHeader(title: "Appearance and distinctive signs")
+            sectionHeader(title: PetCoreKitSPMStrings.petCoreAppearanceSectionTitle)
             
-            Text(petVM.selectedPet?.description ?? "No distinctive signs recorded.")
+            Text(petVM.selectedPet?.description ?? PetCoreKitSPMStrings.petCoreAppearanceNoDataText)
                 .font(.body)
                 .foregroundColor(.primary)
                 .lineLimit(nil)
@@ -142,9 +142,9 @@ extension PetProfileView {
 extension PetProfileView {
     private var petInformationSection: some View {
         VStack(spacing: 12) {
-            informationRow(label: "Gender", value: petVM.selectedPet?.gender?.capitalized ?? "Unknown")
-            informationRow(label: "Size", value: petVM.selectedPet?.size?.capitalized ?? "Unknown")
-            informationRow(label: "Weight", value: formatWeight())
+            informationRow(label: PetCoreKitSPMStrings.petCoreGenderLabel, value: petVM.selectedPet?.gender?.capitalized ?? PetCoreKitSPMStrings.petCoreUnknownValue)
+            informationRow(label: PetCoreKitSPMStrings.petCoreSizeLabel, value: petVM.selectedPet?.size?.capitalized ?? PetCoreKitSPMStrings.petCoreUnknownValue)
+            informationRow(label: PetCoreKitSPMStrings.petCoreWeightLabel, value: formatWeight())
         }
         .padding(.bottom, 20)
     }
@@ -165,11 +165,11 @@ extension PetProfileView {
     
     private func formatWeight() -> String {
         if let weight: Double = petVM.selectedPet?.weight, weight > 0 {
-            return String(format: "%.1f kg", weight)
+            return String(format: "%.1f \(PetCoreKitSPMStrings.petCoreWeightUnit)", weight)
         } else if let weightValue: String = petVM.selectedPet?.weightValue, !weightValue.isEmpty {
-            return "\(weightValue) kg"
+            return "\(weightValue) \(PetCoreKitSPMStrings.petCoreWeightUnit)"
         }
-        return "Unknown"
+        return PetCoreKitSPMStrings.petCoreUnknownValue
     }
 }
 
@@ -177,13 +177,13 @@ extension PetProfileView {
 extension PetProfileView {
     private var petImportantDatesSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionHeader(title: "Important Dates")
+            sectionHeader(title: PetCoreKitSPMStrings.petCoreImportantDatesTitle)
             
             VStack(spacing: 16) {
                 if let dateOfBirth: String = petVM.selectedPet?.dateOfBirth, !dateOfBirth.isEmpty {
                     importantDateRow(
                         icon: "calendar",
-                        title: "Birthday",
+                        title: PetCoreKitSPMStrings.petCoreBirthdayTitle,
                         date: dateOfBirth,
                         age: petVM.calculateAge(from: dateOfBirth)
                     )
@@ -192,7 +192,7 @@ extension PetProfileView {
                 if let adoptionDate: String = petVM.selectedPet?.adoptionDate, !adoptionDate.isEmpty {
                     importantDateRow(
                         icon: "house",
-                        title: "Adoption Day",
+                        title: PetCoreKitSPMStrings.petCoreAdoptionTitle,
                         date: adoptionDate,
                         age: nil
                     )
@@ -236,14 +236,13 @@ extension PetProfileView {
     }
 }
 
-
 // MARK: - Buttons
 extension PetProfileView {
     private var bottomButton: some View {
-        SQAButton(title: petVM.hasNewImageSelected ? "Save Image" : "Edit \(petVM.selectedPet?.name ?? "pet")") {
+        SQAButton(title: petVM.hasNewImageSelected ? PetCoreKitSPMStrings.petCoreSaveImageButton : PetCoreKitSPMStrings.petCoreEditPetButton.replacingOccurrences(of: "{petName}", with: petVM.selectedPet?.name ?? PetCoreKitSPMStrings.petCoreEditPetFallback)) {
             if petVM.hasNewImageSelected {
                 Task {
-                   let imageResponse = try await uploadPetPicture()
+                   let imageResponse: ResponseModel<String> = try await uploadPetPicture()
                    if imageResponse.isSuccess {
                        try await changePetImage()
                     } else {
@@ -251,7 +250,7 @@ extension PetProfileView {
                     }
                 }
             } else {
-                print(">>> Edit Pet")
+                print(PetCoreKitSPMStrings.petCoreEditPetDebugLog)
                 // Handle editing pet here
             }
         }
@@ -287,9 +286,9 @@ extension PetProfileView {
         let response = await imageVM.uploadImage(folder: .petProfile)
         if response.isSuccess  {
             petVM.setPetImage(response.data)
-            return ResponseModel<String>(data: "Success", error: nil)
+            return ResponseModel<String>(data: PetCoreKitSPMStrings.petCoreResponseSuccess, error: nil)
         } else {
-            return ResponseModel<String>(data: nil, error: "Error")
+            return ResponseModel<String>(data: nil, error: PetCoreKitSPMStrings.petCoreResponseError)
         }
     }
     
