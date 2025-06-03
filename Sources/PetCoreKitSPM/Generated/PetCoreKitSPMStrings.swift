@@ -4,252 +4,324 @@
 import Foundation
 
 public enum PetCoreKitSPMStrings {
-    public static var petCoreVM_stepTitle_breed: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_breed", value: "Breed", table: nil)
-    }
-
-    public static var petCoreUnknownBreed: String {
-        return Bundle.module.localizedString(forKey: "petCoreUnknownBreed", value: "Unknown Breed", table: nil)
-    }
-
-    public static var petCoreVM_errorSelectedPetBreedNil: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetBreedNil", value: "selectedPetBreed is nil - cannot set", table: nil)
-    }
-
-    public static var petCoreDashGreeting: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashGreeting", value: "Hello,", table: nil)
-    }
-
-    public static var petCoreVM_dateTypeAdoption: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_dateTypeAdoption", value: "adoption date", table: nil)
-    }
-
-    public static var petCoreDashErrorTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashErrorTitle", value: "Error", table: nil)
-    }
-
-    public static var petCoreAlertDismissButton: String {
-        return Bundle.module.localizedString(forKey: "petCoreAlertDismissButton", value: "Ok", table: nil)
-    }
-
-    public static var petCoreResponseSuccess: String {
-        return Bundle.module.localizedString(forKey: "petCoreResponseSuccess", value: "Success", table: nil)
-    }
-
-    public static var petCoreVM_validationPetDescriptionRequired: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetDescriptionRequired", value: "Pet description is required to proceed", table: nil)
-    }
-
-    public static var petCoreDashAddPetButton: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashAddPetButton", value: "Add Pet", table: nil)
-    }
-
-    public static var petCoreDeleteAlertFallbackName: String {
-        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertFallbackName", value: "this pet", table: nil)
-    }
-
-    public static var petCoreEditPetButton: String {
-        return Bundle.module.localizedString(forKey: "petCoreEditPetButton", value: "Edit {petName}", table: nil)
-    }
-
-    public static var petCoreVM_ageMultipleYears: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_ageMultipleYears", value: "{years} years old", table: nil)
-    }
-
-    public static var petCoreVM_validationPetNameRequired: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetNameRequired", value: "Pet name is required to proceed", table: nil)
-    }
-
-    public static var petCoreVM_dateValidationToday: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_dateValidationToday", value: "The {dateType} cannot be today. Please select a past date.", table: nil)
+    public static var petCoreVM_errorSelectedPetNil: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetNil", value: "selectedPet is nil - cannot copy pet model", table: nil)
     }
 
     public static var petCoreEditPetDebugLog: String {
         return Bundle.module.localizedString(forKey: "petCoreEditPetDebugLog", value: ">>> Edit Pet", table: nil)
     }
 
-    public static var petCoreVM_defaultGender: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_defaultGender", value: "MALE", table: nil)
+    public static var petCoreVM_stepTitle_petDetails: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_petDetails", value: "Pet Details", table: nil)
     }
 
-    public static var petCoreVM_stepTitle_review: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_review", value: "Review", table: nil)
-    }
-
-    public static var petCoreDashSuccessMessage: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashSuccessMessage", value: "SUCCESS", table: nil)
-    }
-
-    public static var petCoreVM_validationPetBreedRequired: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetBreedRequired", value: "Pet breed is required to proceed", table: nil)
+    public static var petCoreAlertErrorTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAlertErrorTitle", value: "Error", table: nil)
     }
 
     public static var petCoreVM_ageMultipleMonths: String {
         return Bundle.module.localizedString(forKey: "petCoreVM_ageMultipleMonths", value: "{months} months old", table: nil)
     }
 
-    public static var petCoreAppearanceNoDataText: String {
-        return Bundle.module.localizedString(forKey: "petCoreAppearanceNoDataText", value: "No distinctive signs recorded.", table: nil)
-    }
-
-    public static var petCoreImportantDatesTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreImportantDatesTitle", value: "Important Dates", table: nil)
-    }
-
-    public static var petCoreVM_stepTitle_healthInfo: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_healthInfo", value: "Health Info", table: nil)
-    }
-
-    public static var petCoreEditPetFallback: String {
-        return Bundle.module.localizedString(forKey: "petCoreEditPetFallback", value: "Edit pet", table: nil)
-    }
-
-    public static var petCoreImagePlaceholderText: String {
-        return Bundle.module.localizedString(forKey: "petCoreImagePlaceholderText", value: "Edit pet image", table: nil)
-    }
-
-    public static var petCoreVM_debugAdoptionDateSet: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_debugAdoptionDateSet", value: "Pet adoption date set to: {selectedDate}", table: nil)
-    }
-
-    public static var petCoreVM_size_large: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_size_large", value: "LARGE", table: nil)
-    }
-
-    public static var petCoreSizeLabel: String {
-        return Bundle.module.localizedString(forKey: "petCoreSizeLabel", value: "Size", table: nil)
-    }
-
-    public static var petCoreVM_size_small: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_size_small", value: "SMALL", table: nil)
-    }
-
-    public static var petCoreWeightUnit: String {
-        return Bundle.module.localizedString(forKey: "petCoreWeightUnit", value: "kg", table: nil)
-    }
-
-    public static var petCoreVM_validationPetSizeRequired: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetSizeRequired", value: "Pet size is required to proceed", table: nil)
-    }
-
-    public static var petCoreVM_errorSelectedPetNil: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetNil", value: "selectedPet is nil - cannot copy pet model", table: nil)
-    }
-
-    public static var petCoreUnknownValue: String {
-        return Bundle.module.localizedString(forKey: "petCoreUnknownValue", value: "Unknown", table: nil)
-    }
-
-    public static var petCoreVM_dateValidationFuture: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_dateValidationFuture", value: "The {dateType} cannot be in the future. Please select a past date.", table: nil)
-    }
-
-    public static var petCoreVM_errorSelectedPetTypeNil: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetTypeNil", value: "selectedPetType is nil - cannot set", table: nil)
-    }
-
-    public static var petCoreVM_successDeletionMessage: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_successDeletionMessage", value: "Success deletion", table: nil)
-    }
-
-    public static var petCoreVM_ageOneMonth: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_ageOneMonth", value: "1 month old", table: nil)
+    public static var petCoreVM_debugBirthdaySet: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_debugBirthdaySet", value: "Pet birthday set to: {selectedDate}", table: nil)
     }
 
     public static var petCoreResponseError: String {
         return Bundle.module.localizedString(forKey: "petCoreResponseError", value: "Error", table: nil)
     }
 
-    public static var petCoreUnknownPet: String {
-        return Bundle.module.localizedString(forKey: "petCoreUnknownPet", value: "Unknown Pet", table: nil)
+    public static var petCoreVM_stepTitle_breed: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_breed", value: "Breed", table: nil)
     }
 
-    public static var petCoreDeleteAlertCancelButton: String {
-        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertCancelButton", value: "Cancel", table: nil)
+    public static var petCoreAddS4GenderPickerTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4GenderPickerTitle", value: "Select Gender", table: nil)
     }
 
-    public static var petCoreGenderLabel: String {
-        return Bundle.module.localizedString(forKey: "petCoreGenderLabel", value: "Gender", table: nil)
+    public static var petCoreAddS4BirthdayLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4BirthdayLabel", value: "Birthday", table: nil)
     }
 
-    public static var petCoreVM_stepTitle_basicInfo: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_basicInfo", value: "Basic Info", table: nil)
-    }
-
-    public static var petCoreVM_gender_intersex: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_gender_intersex", value: "INTERSEX", table: nil)
-    }
-
-    public static var petCoreDashAlertButtonOK: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashAlertButtonOK", value: "OK", table: nil)
-    }
-
-    public static var petCoreSaveImageButton: String {
-        return Bundle.module.localizedString(forKey: "petCoreSaveImageButton", value: "Save Image", table: nil)
-    }
-
-    public static var petCoreVM_gender_female: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_gender_female", value: "FEMALE", table: nil)
-    }
-
-    public static var petCoreDashSuccessTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashSuccessTitle", value: "Success", table: nil)
-    }
-
-    public static var petCoreVM_debugAdoptionSameAsBirthday: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_debugAdoptionSameAsBirthday", value: "Adoption date set to same as birthday: {petBirthday}", table: nil)
-    }
-
-    public static var petCoreVM_size_medium: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_size_medium", value: "MEDIUM", table: nil)
-    }
-
-    public static var petCoreDashEmptyStateTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashEmptyStateTitle", value: "Uh Oh!", table: nil)
-    }
-
-    public static var petCoreVM_debugBirthdaySet: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_debugBirthdaySet", value: "Pet birthday set to: {selectedDate}", table: nil)
-    }
-
-    public static var petCoreVM_stepTitle_petDetails: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_petDetails", value: "Pet Details", table: nil)
-    }
-
-    public static var petCoreAdoptionTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreAdoptionTitle", value: "Adoption Day", table: nil)
+    public static var petCoreVM_debugAdoptionDateSet: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_debugAdoptionDateSet", value: "Pet adoption date set to: {selectedDate}", table: nil)
     }
 
     public static var petCoreVM_validationWeightInvalid: String {
         return Bundle.module.localizedString(forKey: "petCoreVM_validationWeightInvalid", value: "Please enter a valid weight (numbers only)", table: nil)
     }
 
-    public static var petCoreVM_ageLessThanMonth: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_ageLessThanMonth", value: "Less than 1 month old", table: nil)
+    public static var petCoreDashErrorTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashErrorTitle", value: "Error", table: nil)
     }
 
-    public static var petCorePetTypeFallback: String {
-        return Bundle.module.localizedString(forKey: "petCorePetTypeFallback", value: "Pet", table: nil)
+    public static var petCoreAddS2ChooseBreedTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS2ChooseBreedTitle", value: "Choose your {petType} breed", table: nil)
     }
 
-    public static var petCoreVM_gender_male: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_gender_male", value: "MALE", table: nil)
-    }
-
-    public static var petCoreVM_errorSelectedPetGenderNil: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetGenderNil", value: "selectedPetGender is nil - cannot set", table: nil)
+    public static var petCoreAddS4AdoptionDateLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4AdoptionDateLabel", value: "Adoption Date", table: nil)
     }
 
     public static var petCoreVM_ageOneYear: String {
         return Bundle.module.localizedString(forKey: "petCoreVM_ageOneYear", value: "1 year old", table: nil)
     }
 
+    public static var petCoreAddS3DescriptionLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS3DescriptionLabel", value: "Description", table: nil)
+    }
+
+    public static var petCoreAddAlertButtonOK: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddAlertButtonOK", value: "OK", table: nil)
+    }
+
+    public static var petCoreAdoptionTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAdoptionTitle", value: "Adoption Day", table: nil)
+    }
+
+    public static var petCoreVM_ageMultipleYears: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_ageMultipleYears", value: "{years} years old", table: nil)
+    }
+
+    public static var petCoreVM_validationPetBreedRequired: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetBreedRequired", value: "Pet breed is required to proceed", table: nil)
+    }
+
+    public static var petCoreAddS4SizeLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4SizeLabel", value: "Size", table: nil)
+    }
+
+    public static var petCoreVM_successDeletionMessage: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_successDeletionMessage", value: "Success deletion", table: nil)
+    }
+
+    public static var petCoreDashEmptyStateTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashEmptyStateTitle", value: "Uh Oh!", table: nil)
+    }
+
+    public static var petCoreVM_validationPetSizeRequired: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetSizeRequired", value: "Pet size is required to proceed", table: nil)
+    }
+
+    public static var petCoreVM_size_large: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_size_large", value: "LARGE", table: nil)
+    }
+
+    public static var petCoreDashAlertButtonOK: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashAlertButtonOK", value: "OK", table: nil)
+    }
+
+    public static var petCoreAddS1PetTypeLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS1PetTypeLabel", value: "Pet Type", table: nil)
+    }
+
+    public static var petCoreAddS4WeightLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4WeightLabel", value: "Weight (kg)", table: nil)
+    }
+
+    public static var petCoreVM_validationPetNameRequired: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetNameRequired", value: "Pet name is required to proceed", table: nil)
+    }
+
+    public static var petCoreAddS2PetBreedLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS2PetBreedLabel", value: "Pet Breed", table: nil)
+    }
+
+    public static var petCoreDeleteAlertCancelButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertCancelButton", value: "Cancel", table: nil)
+    }
+
     public static var petCoreAlertSuccessTitle: String {
         return Bundle.module.localizedString(forKey: "petCoreAlertSuccessTitle", value: "Success", table: nil)
     }
 
-    public static var petCoreVM_errorSelectedPetIdNil: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetIdNil", value: "selectedPetID is nil - cannot delete pet", table: nil)
+    public static var petCoreVM_size_medium: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_size_medium", value: "MEDIUM", table: nil)
+    }
+
+    public static var petCoreVM_size_small: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_size_small", value: "SMALL", table: nil)
+    }
+
+    public static var petCoreVM_dateTypeAdoption: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_dateTypeAdoption", value: "adoption date", table: nil)
+    }
+
+    public static var petCoreAddPreviousButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddPreviousButton", value: "Previous", table: nil)
+    }
+
+    public static var petCoreAddS4SameAsBirthdayButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4SameAsBirthdayButton", value: "Same as birthday", table: nil)
+    }
+
+    public static var petCoreGenderLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreGenderLabel", value: "Gender", table: nil)
+    }
+
+    public static var petCoreDashEmptyStateMessage: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashEmptyStateMessage", value: "Looks like you have no profiles set up at this moment, add your pet now.", table: nil)
+    }
+
+    public static var petCoreVM_dateValidationFuture: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_dateValidationFuture", value: "The {dateType} cannot be in the future. Please select a past date.", table: nil)
+    }
+
+    public static var petCoreDashAddPetButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashAddPetButton", value: "Add Pet", table: nil)
+    }
+
+    public static var petCoreAddS5WeightUnit: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5WeightUnit", value: "kg", table: nil)
+    }
+
+    public static var petCoreVM_defaultGender: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_defaultGender", value: "MALE", table: nil)
+    }
+
+    public static var petCoreEditPetFallback: String {
+        return Bundle.module.localizedString(forKey: "petCoreEditPetFallback", value: "Edit pet", table: nil)
+    }
+
+    public static var petCoreVM_stepTitle_healthInfo: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_healthInfo", value: "Health Info", table: nil)
+    }
+
+    public static var petCoreAddS4GenderLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4GenderLabel", value: "Gender", table: nil)
+    }
+
+    public static var petCoreAddS5AgeLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5AgeLabel", value: "Age", table: nil)
+    }
+
+    public static var petCoreAddS5WeightLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5WeightLabel", value: "Weight", table: nil)
+    }
+
+    public static var petCoreUnknownBreed: String {
+        return Bundle.module.localizedString(forKey: "petCoreUnknownBreed", value: "Unknown Breed", table: nil)
+    }
+
+    public static var petCoreVM_stepTitle_basicInfo: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_basicInfo", value: "Basic Info", table: nil)
+    }
+
+    public static var petCoreVM_ageLessThanMonth: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_ageLessThanMonth", value: "Less than 1 month old", table: nil)
+    }
+
+    public static var petCoreVM_gender_intersex: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_gender_intersex", value: "INTERSEX", table: nil)
+    }
+
+    public static var petCoreVM_stepTitle_review: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_stepTitle_review", value: "Review", table: nil)
+    }
+
+    public static var petCoreEditPetButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreEditPetButton", value: "Edit {petName}", table: nil)
+    }
+
+    public static var petCoreUnknownValue: String {
+        return Bundle.module.localizedString(forKey: "petCoreUnknownValue", value: "Unknown", table: nil)
+    }
+
+    public static var petCoreAddS1PetNamePlaceholder: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS1PetNamePlaceholder", value: "Enter your pet's name", table: nil)
+    }
+
+    public static var petCoreAddS1PetNameLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS1PetNameLabel", value: "Pet Name", table: nil)
+    }
+
+    public static var petCoreAddTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddTitle", value: "Add New Pet", table: nil)
+    }
+
+    public static var petCoreDashSuccessMessage: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashSuccessMessage", value: "SUCCESS", table: nil)
+    }
+
+    public static var petCoreAlertDismissButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreAlertDismissButton", value: "Ok", table: nil)
+    }
+
+    public static var petCoreAddS5ReviewTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5ReviewTitle", value: "Review your pet's information", table: nil)
+    }
+
+    public static var petCoreAddS4SizePickerTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4SizePickerTitle", value: "Select Size", table: nil)
+    }
+
+    public static var petCoreAddS5WeightUnit2: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5WeightUnit2", value: "lb", table: nil)
+    }
+
+    public static var petCoreResponseSuccess: String {
+        return Bundle.module.localizedString(forKey: "petCoreResponseSuccess", value: "Success", table: nil)
+    }
+
+    public static var petCoreAddS5UnknownAge: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5UnknownAge", value: "Unknown age", table: nil)
+    }
+
+    public static var petCoreVM_errorSelectedPetSizeNil: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetSizeNil", value: "selectedPetSize is nil - cannot set", table: nil)
+    }
+
+    public static var petCoreAddS5BreedLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5BreedLabel", value: "Breed", table: nil)
+    }
+
+    public static var petCoreVM_defaultSize: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_defaultSize", value: "SMALL", table: nil)
+    }
+
+    public static var petCoreDeleteAlertDeleteButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertDeleteButton", value: "Delete", table: nil)
+    }
+
+    public static var petCoreImagePlaceholderText: String {
+        return Bundle.module.localizedString(forKey: "petCoreImagePlaceholderText", value: "Edit pet image", table: nil)
+    }
+
+    public static var petCoreBirthdayTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreBirthdayTitle", value: "Birthday", table: nil)
+    }
+
+    public static var petCoreDashGreeting: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashGreeting", value: "Hello,", table: nil)
+    }
+
+    public static var petCoreAddSuccessTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddSuccessTitle", value: "Success", table: nil)
+    }
+
+    public static var petCoreAddS3TellUsMoreTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS3TellUsMoreTitle", value: "Tell us more about your pet", table: nil)
+    }
+
+    public static var petCoreVM_validationPetDescriptionRequired: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_validationPetDescriptionRequired", value: "Pet description is required to proceed", table: nil)
+    }
+
+    public static var petCoreVM_debugAdoptionSameAsBirthday: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_debugAdoptionSameAsBirthday", value: "Adoption date set to same as birthday: {petBirthday}", table: nil)
+    }
+
+    public static var petCoreSizeLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreSizeLabel", value: "Size", table: nil)
+    }
+
+    public static var petCoreAddS4WeightPlaceholder: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4WeightPlaceholder", value: "Enter weight", table: nil)
+    }
+
+    public static var petCoreAppearanceSectionTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAppearanceSectionTitle", value: "Appearance and distinctive signs", table: nil)
     }
 
     public static var petCoreVM_validationPetTypeRequired: String {
@@ -260,63 +332,135 @@ public enum PetCoreKitSPMStrings {
         return Bundle.module.localizedString(forKey: "petCoreVM_validationPetWeightRequired", value: "Pet weight is required to proceed", table: nil)
     }
 
-    public static var petCoreVM_defaultSize: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_defaultSize", value: "SMALL", table: nil)
+    public static var petCoreAddS5NotesLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5NotesLabel", value: "Notes:", table: nil)
     }
 
-    public static var petCoreDeleteAlertMessage: String {
-        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertMessage", value: "Are you sure you want to delete {petName}? This action cannot be undone.", table: nil)
+    public static var petCoreWeightUnit: String {
+        return Bundle.module.localizedString(forKey: "petCoreWeightUnit", value: "kg", table: nil)
     }
 
-    public static var petCoreDashActivePetProfilesTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashActivePetProfilesTitle", value: "Active Pet Profiles", table: nil)
-    }
-
-    public static var petCoreVM_weightUnit: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_weightUnit", value: "kg", table: nil)
-    }
-
-    public static var petCoreAlertErrorTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreAlertErrorTitle", value: "Error", table: nil)
+    public static var petCoreAddValidationErrorTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddValidationErrorTitle", value: "Validation Error", table: nil)
     }
 
     public static var petCoreVM_dateTypeBirthday: String {
         return Bundle.module.localizedString(forKey: "petCoreVM_dateTypeBirthday", value: "birthday", table: nil)
     }
 
-    public static var petCoreWeightLabel: String {
-        return Bundle.module.localizedString(forKey: "petCoreWeightLabel", value: "Weight", table: nil)
+    public static var petCoreAddS1BasicsTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS1BasicsTitle", value: "Let's start with the basics", table: nil)
+    }
+
+    public static var petCoreVM_errorSelectedPetGenderNil: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetGenderNil", value: "selectedPetGender is nil - cannot set", table: nil)
+    }
+
+    public static var petCoreVM_weightUnit: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_weightUnit", value: "kg", table: nil)
+    }
+
+    public static var petCoreUnknownPet: String {
+        return Bundle.module.localizedString(forKey: "petCoreUnknownPet", value: "Unknown Pet", table: nil)
     }
 
     public static var petCoreDeleteAlertTitle: String {
         return Bundle.module.localizedString(forKey: "petCoreDeleteAlertTitle", value: "Delete Pet", table: nil)
     }
 
+    public static var petCoreAddS5NameLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5NameLabel", value: "Name", table: nil)
+    }
+
+    public static var petCoreDashSuccessTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashSuccessTitle", value: "Success", table: nil)
+    }
+
+    public static var petCoreVM_errorSelectedPetBreedNil: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetBreedNil", value: "selectedPetBreed is nil - cannot set", table: nil)
+    }
+
+    public static var petCoreVM_errorSelectedPetIdNil: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetIdNil", value: "selectedPetID is nil - cannot delete pet", table: nil)
+    }
+
     public static var petCoreNavigationTitle: String {
         return Bundle.module.localizedString(forKey: "petCoreNavigationTitle", value: "Pet Profile", table: nil)
+    }
+
+    public static var petCoreSaveImageButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreSaveImageButton", value: "Save Image", table: nil)
+    }
+
+    public static var petCoreVM_gender_male: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_gender_male", value: "MALE", table: nil)
+    }
+
+    public static var petCoreAddS5SizeLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS5SizeLabel", value: "Size", table: nil)
+    }
+
+    public static var petCoreAddNextButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddNextButton", value: "Next", table: nil)
+    }
+
+    public static var petCoreWeightLabel: String {
+        return Bundle.module.localizedString(forKey: "petCoreWeightLabel", value: "Weight", table: nil)
+    }
+
+    public static var petCoreAppearanceNoDataText: String {
+        return Bundle.module.localizedString(forKey: "petCoreAppearanceNoDataText", value: "No distinctive signs recorded.", table: nil)
+    }
+
+    public static var petCoreVM_ageOneMonth: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_ageOneMonth", value: "1 month old", table: nil)
+    }
+
+    public static var petCoreDashActivePetProfilesTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreDashActivePetProfilesTitle", value: "Active Pet Profiles", table: nil)
+    }
+
+    public static var petCoreAddS4HealthInfoTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4HealthInfoTitle", value: "Health information", table: nil)
+    }
+
+    public static var petCoreDeleteAlertFallbackName: String {
+        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertFallbackName", value: "this pet", table: nil)
+    }
+
+    public static var petCoreVM_errorSelectedPetTypeNil: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetTypeNil", value: "selectedPetType is nil - cannot set", table: nil)
+    }
+
+    public static var petCorePetTypeFallback: String {
+        return Bundle.module.localizedString(forKey: "petCorePetTypeFallback", value: "Pet", table: nil)
+    }
+
+    public static var petCoreAddSavePetButton: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddSavePetButton", value: "Save Pet", table: nil)
+    }
+
+    public static var petCoreAddS4WeightUnit: String {
+        return Bundle.module.localizedString(forKey: "petCoreAddS4WeightUnit", value: "kg", table: nil)
+    }
+
+    public static var petCoreVM_gender_female: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_gender_female", value: "FEMALE", table: nil)
+    }
+
+    public static var petCoreDeleteAlertMessage: String {
+        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertMessage", value: "Are you sure you want to delete {petName}? This action cannot be undone.", table: nil)
+    }
+
+    public static var petCoreImportantDatesTitle: String {
+        return Bundle.module.localizedString(forKey: "petCoreImportantDatesTitle", value: "Important Dates", table: nil)
     }
 
     public static var petCoreVM_successMessage: String {
         return Bundle.module.localizedString(forKey: "petCoreVM_successMessage", value: "Success", table: nil)
     }
 
-    public static var petCoreDeleteAlertDeleteButton: String {
-        return Bundle.module.localizedString(forKey: "petCoreDeleteAlertDeleteButton", value: "Delete", table: nil)
-    }
-
-    public static var petCoreBirthdayTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreBirthdayTitle", value: "Birthday", table: nil)
-    }
-
-    public static var petCoreAppearanceSectionTitle: String {
-        return Bundle.module.localizedString(forKey: "petCoreAppearanceSectionTitle", value: "Appearance and distinctive signs", table: nil)
-    }
-
-    public static var petCoreDashEmptyStateMessage: String {
-        return Bundle.module.localizedString(forKey: "petCoreDashEmptyStateMessage", value: "Looks like you have no profiles set up at this moment, add your pet now.", table: nil)
-    }
-
-    public static var petCoreVM_errorSelectedPetSizeNil: String {
-        return Bundle.module.localizedString(forKey: "petCoreVM_errorSelectedPetSizeNil", value: "selectedPetSize is nil - cannot set", table: nil)
+    public static var petCoreVM_dateValidationToday: String {
+        return Bundle.module.localizedString(forKey: "petCoreVM_dateValidationToday", value: "The {dateType} cannot be today. Please select a past date.", table: nil)
     }
 }

@@ -32,32 +32,32 @@ struct Step4HealthInfo: View {
 private extension Step4HealthInfo {
     
     var headerTitle: some View {
-        Text("Health information")
+        Text(PetCoreKitSPMStrings.petCoreAddS4HealthInfoTitle)
             .font(.title2)
             .fontWeight(.semibold)
     }
     
     var weightSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("Weight (kg)")
+            sectionTitle(PetCoreKitSPMStrings.petCoreAddS4WeightLabel)
             
             HStack {
                 SQATextField(
-                    placeholder: "Enter weight",
+                    placeholder: PetCoreKitSPMStrings.petCoreAddS4WeightPlaceholder,
                     text: $petVM.petWeight,
                     keyboardType: .number
                 )
-                Text("kg").foregroundColor(.gray)
+                Text(PetCoreKitSPMStrings.petCoreAddS4WeightUnit).foregroundColor(.gray)
             }
         }
     }
     
     var sizeSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("Size")
+            sectionTitle(PetCoreKitSPMStrings.petCoreAddS4SizeLabel)
             
             createPicker(
-                title: "Select Size",
+                title: PetCoreKitSPMStrings.petCoreAddS4SizePickerTitle,
                 selection: Binding<String>(
                     get: { petVM.petSize },
                     set: { newValue in petVM.setPetSize(newValue) }
@@ -69,10 +69,10 @@ private extension Step4HealthInfo {
     
     var genderSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("Gender")
+            sectionTitle(PetCoreKitSPMStrings.petCoreAddS4GenderLabel)
             
             createPicker(
-                title: "Select Gender",
+                title: PetCoreKitSPMStrings.petCoreAddS4GenderPickerTitle,
                 selection: Binding<String>(
                     get: { petVM.petGender },
                     set: { newValue in petVM.setPetGender(newValue) }
@@ -84,7 +84,7 @@ private extension Step4HealthInfo {
     
     var birthdaySection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("Birthday")
+            sectionTitle(PetCoreKitSPMStrings.petCoreAddS4BirthdayLabel)
             
             createDatePicker(
                 icon: "calendar",
@@ -103,7 +103,7 @@ private extension Step4HealthInfo {
                     Spacer()
                     
                     SQAButton(
-                        title: "Same as birthday",
+                        title: PetCoreKitSPMStrings.petCoreAddS4SameAsBirthdayButton,
                         icon: "arrow.down.circle.fill",
                         style: .outline,
                         size: .small
@@ -123,7 +123,7 @@ private extension Step4HealthInfo {
     
     var adoptionDateSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("Adoption Date")
+            sectionTitle(PetCoreKitSPMStrings.petCoreAddS4AdoptionDateLabel)
             
             createDatePicker(
                 icon: "house",

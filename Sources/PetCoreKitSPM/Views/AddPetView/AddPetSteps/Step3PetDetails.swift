@@ -16,7 +16,7 @@ struct Step3PetDetails: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Tell us more about your pet")
+            Text(PetCoreKitSPMStrings.petCoreAddS3TellUsMoreTitle)
                     .font(.title2)
                     .fontWeight(.semibold)
             
@@ -30,7 +30,7 @@ struct Step3PetDetails: View {
             .frame(maxWidth: .infinity)
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("Description")
+                Text(PetCoreKitSPMStrings.petCoreAddS3DescriptionLabel)
                     .font(.headline)
                 
                 TextEditor(text: $petVM.petDescription)
