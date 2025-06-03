@@ -31,14 +31,14 @@ struct AddPetView: View {
          .dismissKeyboardOnTap()
          .toolbar(content: {
              ToolbarItem(placement: .principal) {
-                 Text("Add New Pet")
+                 Text(PetCoreKitSPMStrings.petCoreAddTitle)
              }
          })
         .alert(isPresented: $petVM.showAlert) {
             Alert(
-                title: Text(petVM.isSuccess ? "Success" : "Validation Error"),
+                title: Text(petVM.isSuccess ? PetCoreKitSPMStrings.petCoreAddSuccessTitle : PetCoreKitSPMStrings.petCoreAddValidationErrorTitle),
                 message: Text(petVM.alertMessage),
-                dismissButton: .default(Text("OK"))
+                dismissButton: .default(Text(PetCoreKitSPMStrings.petCoreAddAlertButtonOK))
             )
         }
         .onAppear {
@@ -54,7 +54,6 @@ extension AddPetView {
     // MARK: - Stepper Header
     private var stepperHeader: some View {
         VStack(spacing: 16) {
-            // Progress Bar
             HStack(spacing: 8) {
                 ForEach(0..<petVM.totalSteps, id: \.self) { step in
                     Rectangle()
@@ -65,7 +64,6 @@ extension AddPetView {
             }
             .padding(.horizontal)
             
-            // Step Indicators
             HStack {
                 ForEach(0..<petVM.totalSteps, id: \.self) { step in
                     VStack(spacing: 8) {
@@ -121,7 +119,7 @@ extension AddPetView {
     private var navigationButtons: some View {
         HStack {
             if petVM.currentStep > 0 {
-                SQAButton(title: "Previous", style: .outline) {
+                SQAButton(title: PetCoreKitSPMStrings.petCoreAddPreviousButton, style: .outline) {
                     withAnimation(.easeInOut(duration: 0.3)) {
                         petVM.currentStep -= 1
                     }
@@ -131,7 +129,7 @@ extension AddPetView {
             Spacer()
             
             if petVM.currentStep < petVM.totalSteps - 1 {
-                SQAButton(title: "Next", style: .primary, size: .medium) {
+                SQAButton(title: PetCoreKitSPMStrings.petCoreAddNextButton, style: .primary, size: .medium) {
                     if petVM.validateCurrentStepAndShowAlert() {
                         withAnimation(.easeInOut(duration: 0.3)) {
                             if petVM.currentStep == 0 {
@@ -151,7 +149,7 @@ extension AddPetView {
                     }
                 }
             } else {
-                SQAButton(title: "Save Pet") {
+                SQAButton(title: PetCoreKitSPMStrings.petCoreAddSavePetButton) {
                     Task {
                        await savePet()
                     }
@@ -189,9 +187,6 @@ extension AddPetView {
         }
     }
 }
-
-
-
 
 #Preview {
     AddPetView()

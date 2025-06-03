@@ -14,7 +14,7 @@ struct Step5Review: View {
         
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Review your pet's information")
+            Text(PetCoreKitSPMStrings.petCoreAddS5ReviewTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
             
@@ -25,20 +25,20 @@ struct Step5Review: View {
                     }
                     
                     HStack {
-                        reviewRow(title: "Breed", value: petVM.petBreed)
+                        reviewRow(title: PetCoreKitSPMStrings.petCoreAddS5BreedLabel, value: petVM.petBreed)
                         Shared_kit.startCustomBreedKit(width: 30, height: 30, icon: "pawprint") {}
                     }
                 }
 
                 VStack(spacing: 12) {
-                    reviewRow(title: "Name", value: petVM.petName ?? "")
-                    reviewRow(title: "Age", value: petVM.calculateAge(from: petVM.dateToString(petVM.petBirthday)) ?? "Unknown age")
-                    reviewRow(title: "Weight", value: "\(petVM.petWeight) kg")
-                    reviewRow(title: "Size", value: petVM.petSize.capitalized)
+                    reviewRow(title: PetCoreKitSPMStrings.petCoreAddS5NameLabel, value: petVM.petName ?? "")
+                    reviewRow(title: PetCoreKitSPMStrings.petCoreAddS5AgeLabel, value: petVM.calculateAge(from: petVM.dateToString(petVM.petBirthday)) ?? PetCoreKitSPMStrings.petCoreAddS5UnknownAge)
+                    reviewRow(title: PetCoreKitSPMStrings.petCoreAddS5WeightLabel, value: "\(petVM.petWeight) \(PetCoreKitSPMStrings.petCoreAddS5WeightUnit)")
+                    reviewRow(title: PetCoreKitSPMStrings.petCoreAddS5SizeLabel, value: petVM.petSize.capitalized)
                     
                     if !petVM.petDescription.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Notes:")
+                            Text(PetCoreKitSPMStrings.petCoreAddS5NotesLabel)
                                 .font(.headline)
                             Text(petVM.petDescription)
                                 .font(.body)
@@ -71,12 +71,10 @@ extension Step5Review {
     
     private var petImageComponent: some View {
         ZStack {
-            // Blue circle background
             Circle()
                 .fill(Color(red: 0.37, green: 0.52, blue: 0.93).opacity(0.6))
                 .frame(width: 120, height: 120)
             
-            // Pet Image
             AsyncImage(url: URL(string: petVM.petImage?.url ?? "")) { phase in
                 switch phase {
                     case .success(let image):

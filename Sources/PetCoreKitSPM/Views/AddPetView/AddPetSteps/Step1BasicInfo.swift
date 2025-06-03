@@ -13,19 +13,19 @@ struct Step1BasicInfo: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Let's start with the basics")
+            Text(PetCoreKitSPMStrings.petCoreAddS1BasicsTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("Pet Name")
+                Text(PetCoreKitSPMStrings.petCoreAddS1PetNameLabel)
                     .font(.headline)
                 
-                SQATextField(placeholder: "Enter your pet's name", text: $petVM.petName)
+                SQATextField(placeholder: PetCoreKitSPMStrings.petCoreAddS1PetNamePlaceholder, text: $petVM.petName)
             }
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("Pet Type")
+                Text(PetCoreKitSPMStrings.petCoreAddS1PetTypeLabel)
                     .font(.headline)
                 
                 LazyVGrid(columns: [
@@ -48,7 +48,6 @@ struct Step1BasicInfo: View {
             }
             Spacer()
         }
-        // MARK: - CHECK THIS and implement
         .dismissKeyboardOnTap()
     }
     
