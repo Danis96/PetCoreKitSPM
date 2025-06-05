@@ -245,13 +245,10 @@ extension PetProfileView {
                    let imageResponse: ResponseModel<String> = try await uploadPetPicture()
                    if imageResponse.isSuccess {
                        try await changePetImage()
-                    } else {
-                        
                     }
                 }
             } else {
-                print(PetCoreKitSPMStrings.petCoreEditPetDebugLog)
-                // Handle editing pet here
+                petCoordinator.navigate(to: .updatePet)
             }
         }
         .padding(.horizontal, 20)
