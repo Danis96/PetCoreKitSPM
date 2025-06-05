@@ -37,7 +37,7 @@ public class PetCoreViewModel: ObservableObject {
     @Published public var hasNewImageSelected: Bool = false
     private var originalPetImage: ImageModel?
     
-    // MARK: Add pet properties
+    
     @Published public var currentStep: Int = 0
     public let totalSteps: Int = 5
     public let stepTitles: [String] = [
@@ -47,6 +47,8 @@ public class PetCoreViewModel: ObservableObject {
         PetCoreKitSPMStrings.petCoreVM_stepTitle_healthInfo,
         PetCoreKitSPMStrings.petCoreVM_stepTitle_review
     ]
+    
+    // MARK: - Add pet properties
     @Published public var petName: String = ""
     @Published public var petType: String = ""
     @Published public var petBreed: String = ""
@@ -65,6 +67,26 @@ public class PetCoreViewModel: ObservableObject {
     // Date validation error properties
     @Published public var birthdayValidationError: String? = nil
     @Published public var adoptionDateValidationError: String? = nil
+    
+    // MARK: - Edit pet properties
+    @Published public var editPetModel: PetModel?
+    @Published public var editPetName: String = ""
+    @Published public var editPetType: String = ""
+    @Published public var editPetBreed: String = ""
+    @Published public var editPetBreedID: String = ""
+    @Published public var editPetWeight: String = ""
+    @Published public var editPetDescription: String = ""
+    @Published public var editPetGender: String = PetCoreKitSPMStrings.petCoreVM_defaultGender
+    public let editGenders: [String] = [PetCoreKitSPMStrings.petCoreVM_gender_male, PetCoreKitSPMStrings.petCoreVM_gender_female, PetCoreKitSPMStrings.petCoreVM_gender_intersex]
+    @Published public var editPetSize: String = PetCoreKitSPMStrings.petCoreVM_defaultSize
+    public let editSizes: [String] = [PetCoreKitSPMStrings.petCoreVM_size_small, PetCoreKitSPMStrings.petCoreVM_size_medium, PetCoreKitSPMStrings.petCoreVM_size_large]
+    @Published public var editPetBirthday: Date = Date()
+    @Published public var editPetAdoptionDate: Date = Date()
+    private var editPetBirthdayStringForAPI: String = ""
+    private var editPetAdoptionDateStringForAPI: String = ""
+    // Date validation error properties
+    @Published public var editBirthdayValidationError: String? = nil
+    @Published public var editAdoptionDateValidationError: String? = nil
     
     public func getUser() async -> ResponseModel<String> {
         isLoading = true
@@ -156,6 +178,16 @@ public class PetCoreViewModel: ObservableObject {
             let dataResponse = try await petCoreDataSource.fetchPetType()
             petTypeList = dataResponse.data ?? []
             
+            return successResponse("Success", shouldSetAlert: false)
+        } catch let error as NSError {
+            return failureResponse(error.description)
+        }
+    }
+    
+    public func fetchPetByID() async throws -> ResponseModel<String> {
+        do {
+            let dataResponse = try await petCoreDataSource.fetchPetById(petID: selectedPet?.id ?? "")
+            editPetModel = dataResponse.data ?? PetModel()
             return successResponse("Success", shouldSetAlert: false)
         } catch let error as NSError {
             return failureResponse(error.description)
