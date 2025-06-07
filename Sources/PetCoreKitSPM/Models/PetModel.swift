@@ -43,6 +43,7 @@ public struct PetModel: Identifiable, Codable, Sendable {
         case image
         case weight
         case caretakers
+        
     }
     
    public init(
